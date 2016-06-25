@@ -1,30 +1,29 @@
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class Handler {
-	
+
 	LampPanel panel;
 
-	private double baseX, baseY;
 	private int mouseX, mouseY;
 
 	private boolean mouseLeftDown;
 	private boolean mouseMiddleDown;
 	private boolean mouseRightDown;
 
-	// Publicly accessible ArrayLists of the keys down in the current tick, the
+	// ArrayLists of the keys down in the current tick, the
 	// points that the mouse has been pressed at since the last tick, and the
 	// points where the mouse has been released at since the last tick
 
-	public ArrayList<Integer> keysDown = new ArrayList<Integer>();
-	public ArrayList<Point> clickPoints = new ArrayList<Point>();
-	public ArrayList<Point> releasePoints = new ArrayList<Point>();
+	private ArrayList<Integer> keysDown = new ArrayList<Integer>();
+	private ArrayList<Point> clickPoints = new ArrayList<Point>();
+	private ArrayList<Point> releasePoints = new ArrayList<Point>();
 
 	public Handler(LampPanel panel) {
 		this.panel = panel;
-		
+
 		// Instantiate all game objects here
 
 	}
@@ -71,7 +70,7 @@ public class Handler {
 		for (int i = 0; i < clickPoints.size(); i++) {
 			Point click = clickPoints.get(i);
 			// Call mouseClicked on game objects at these points
-			
+
 		}
 		clickPoints = new ArrayList<Point>();
 		for (int i = 0; i < releasePoints.size(); i++) {
@@ -80,12 +79,13 @@ public class Handler {
 
 		}
 		releasePoints = new ArrayList<Point>();
-		
+
 		// Update all game objects here
 		
+		System.out.println(this.keyDown(KeyEvent.VK_U));
 
 	}
-	
+
 	public Point getMouseLoc() {
 		return new Point(mouseX, mouseY);
 	}
@@ -94,22 +94,31 @@ public class Handler {
 		this.mouseX = x;
 		this.mouseY = y;
 	}
-	
+
 	public boolean isMouseLeftDown() {
 		return mouseLeftDown;
 	}
-	
+
 	public boolean isMouseMiddleDown() {
 		return mouseMiddleDown;
 	}
-	
+
 	public boolean isMouseRightDown() {
 		return mouseRightDown;
 	}
 	
+	public boolean keyDown(int keycode) {
+		// Called with KeyEvent.VK_[keyname]
+		
+		if (keysDown.contains(keycode)) {
+			return true;
+		}
+		
+		return false;
+	}
+
 	public void draw(Graphics g) {
 		// Draw all game objects here
-		
-		
+
 	}
 }

@@ -2,6 +2,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
 
@@ -22,10 +27,62 @@ public class LampPanel extends JPanel implements Runnable {
 	Handler handler;
 
 	public LampPanel() {
-		super();
+		this.setDoubleBuffered(false);
+		this.setBackground(Color.WHITE);
 		this.setPreferredSize(new Dimension(PWIDTH, PHEIGHT));
 		
+		setFocusable(true);
+		requestFocus();
+		
 		this.handler = new Handler(this);
+		
+		addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				handler.keyPressed(e.getKeyCode());
+			}
+			
+			public void keyReleased(KeyEvent e) {
+				handler.keyReleased(e.getKeyCode());
+			}
+		});
+		
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					handler.mouseLeftClicked(e.getX(), e.getY());
+					System.out.println("1");
+				} else if (e.getButton() == MouseEvent.BUTTON2) {
+					handler.mouseMiddleClicked(e.getX(), e.getY());
+					System.out.println("2");
+				} else if (e.getButton() == MouseEvent.BUTTON3) {
+					handler.mouseRightClicked(e.getX(), e.getY());
+					System.out.println("3");
+				}
+			}
+			
+			public void mouseReleased(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					handler.mouseLeftReleased(e.getX(), e.getY());
+					System.out.println("1");
+				} else if (e.getButton() == MouseEvent.BUTTON2) {
+					handler.mouseMiddleReleased(e.getX(), e.getY());
+					System.out.println("2");
+				} else if (e.getButton() == MouseEvent.BUTTON3) {
+					handler.mouseRightReleased(e.getX(), e.getY());
+					System.out.println("3");
+				}
+			}
+		});
+		
+		addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseMoved(MouseEvent e) {
+				handler.mouseMoved(e.getX(), e.getY());
+			}
+			
+			public void mouseDragged(MouseEvent e) {
+				handler.mouseMoved(e.getX(), e.getY());
+			}
+		});
 	}
 
 	public void addNotify()
@@ -113,7 +170,7 @@ public class LampPanel extends JPanel implements Runnable {
 
 	private void gameUpdate() {
 		if (!isPaused && !gameOver) {
-			
+			handler.update();
 		}
 	} // end of gameUpdate()
 
@@ -131,7 +188,7 @@ public class LampPanel extends JPanel implements Runnable {
 		dbg.setColor(Color.white);
 		dbg.fillRect(0, 0, PWIDTH, PHEIGHT);
 		
-		
+		handler.draw(dbg);
 		
 	}
 
