@@ -18,20 +18,14 @@ public class LampPanel extends JPanel implements Runnable {
 
 	Image dbImage;
 	Graphics dbg;
-	int ballX = 0;
-	int ballY = 0;
-	int ballVelX = 0;
-	int ballVelY = 0;
+	
+	Handler handler;
 
 	public LampPanel() {
 		super();
 		this.setPreferredSize(new Dimension(PWIDTH, PHEIGHT));
 		
-		ballX = (int) (Math.random() * (PWIDTH - 20) + 10);
-		ballY = (int) (Math.random() * (PHEIGHT - 20) + 10);
-		
-		ballVelX = (int) (Math.random() * 10 + 10);
-		ballVelY = (int) (Math.random() * 10 + 10);
+		this.handler = new Handler(this);
 	}
 
 	public void addNotify()
@@ -112,12 +106,6 @@ public class LampPanel extends JPanel implements Runnable {
 
 			beforeTime = System.nanoTime();
 
-			/*
-			 * If frame animation is taking too long, update the game state
-			 * without rendering it, to get the updates/sec nearer to the
-			 * required FPS.
-			 */
-
 		}
 
 		System.exit(0); // so window disappears
@@ -125,25 +113,7 @@ public class LampPanel extends JPanel implements Runnable {
 
 	private void gameUpdate() {
 		if (!isPaused && !gameOver) {
-			if (ballX < 10) {
-				ballVelX *= -1;
-				ballX = 10;
-			}
-			if (ballY < 10) {
-				ballVelY *= -1;
-				ballY = 10;
-			}
-			if (ballX > PWIDTH - 10) {
-				ballVelX *= -1;
-				ballX = PWIDTH - 10;
-			}
-			if (ballY > PHEIGHT - 10) {
-				ballVelY *= -1;
-				ballY = PHEIGHT - 10;
-			}
 			
-			ballX += ballVelX;
-			ballY += ballVelY;
 		}
 	} // end of gameUpdate()
 
@@ -161,10 +131,8 @@ public class LampPanel extends JPanel implements Runnable {
 		dbg.setColor(Color.white);
 		dbg.fillRect(0, 0, PWIDTH, PHEIGHT);
 		
-		dbg.setColor(new Color((int) ((double)Math.random() * 256), (int) ((double)Math.random() * 256), (int) ((double)Math.random() * 256)));
-		//dbg.fillRect(0, 0, PWIDTH, PHEIGHT);
 		
-		dbg.fillOval(ballX - 10, ballY - 10, 20, 20);
+		
 	}
 
 	private void paintScreen()
