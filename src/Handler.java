@@ -9,6 +9,8 @@ public class Handler {
 	LampPanel panel;
 
 	private int mouseX, mouseY;
+	
+	private Player player;
 
 	private boolean mouseLeftDown;
 	private boolean mouseMiddleDown;
@@ -27,7 +29,7 @@ public class Handler {
 	public Handler(LampPanel panel) {
 		this.panel = panel;
 		this.imageLoader = new BufferedImageLoader();
-
+		this.player = new Player(this);
 		// Instantiate all game objects here
 
 	}
@@ -85,7 +87,7 @@ public class Handler {
 		releasePoints = new ArrayList<Point>();
 
 		// Update all game objects here
-
+		player.update();
 	}
 
 	public Point getMouseLoc() {
@@ -121,7 +123,7 @@ public class Handler {
 
 	public void draw(Graphics g) {
 		// Draw all game objects here
-
+		player.draw(g);
 	}
 	
 	public BufferedImage loadImage(String path) {
