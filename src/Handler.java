@@ -77,7 +77,7 @@ public class Handler {
 		for (int i = 0; i < clickPoints.size(); i++) {
 			Point click = clickPoints.get(i);
 			// Call mouseClicked on game objects at these points
-
+			System.out.println(click);
 		}
 		clickPoints = new ArrayList<Point>();
 		for (int i = 0; i < releasePoints.size(); i++) {
