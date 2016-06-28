@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Handler {
@@ -20,9 +21,12 @@ public class Handler {
 	private ArrayList<Integer> keysDown = new ArrayList<Integer>();
 	private ArrayList<Point> clickPoints = new ArrayList<Point>();
 	private ArrayList<Point> releasePoints = new ArrayList<Point>();
+	
+	private BufferedImageLoader imageLoader;
 
 	public Handler(LampPanel panel) {
 		this.panel = panel;
+		this.imageLoader = new BufferedImageLoader();
 
 		// Instantiate all game objects here
 
@@ -81,8 +85,6 @@ public class Handler {
 		releasePoints = new ArrayList<Point>();
 
 		// Update all game objects here
-		
-		System.out.println(this.keyDown(KeyEvent.VK_U));
 
 	}
 
@@ -120,5 +122,16 @@ public class Handler {
 	public void draw(Graphics g) {
 		// Draw all game objects here
 
+	}
+	
+	public BufferedImage loadImage(String path) {
+		BufferedImage image = null;
+		try {
+			image = imageLoader.loadImage(path);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return image;
 	}
 }
