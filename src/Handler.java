@@ -1,5 +1,6 @@
 import java.awt.Graphics;
 import java.awt.Point;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 public class Handler {
 
 	LampPanel panel;
+	World world;
 
 	private int mouseX, mouseY;
 	
@@ -23,7 +25,8 @@ public class Handler {
 	private ArrayList<Integer> keysDown = new ArrayList<Integer>();
 	private ArrayList<Point> clickPoints = new ArrayList<Point>();
 	private ArrayList<Point> releasePoints = new ArrayList<Point>();
-	
+
+
 	private BufferedImageLoader imageLoader;
 
 	public Handler(LampPanel panel) {
@@ -31,6 +34,7 @@ public class Handler {
 		this.imageLoader = new BufferedImageLoader();
 		this.player = new Player(this);
 		// Instantiate all game objects here
+		world = new World(this);
 
 	}
 
@@ -76,7 +80,7 @@ public class Handler {
 		for (int i = 0; i < clickPoints.size(); i++) {
 			Point click = clickPoints.get(i);
 			// Call mouseClicked on game objects at these points
-
+			System.out.println(click);
 		}
 		clickPoints = new ArrayList<Point>();
 		for (int i = 0; i < releasePoints.size(); i++) {
@@ -86,8 +90,12 @@ public class Handler {
 		}
 		releasePoints = new ArrayList<Point>();
 
-		// Update all game objects here
+		// Update all game objects here		
+		world.update();
+
+
 		player.update();
+
 	}
 
 	public Point getMouseLoc() {
@@ -123,6 +131,11 @@ public class Handler {
 
 	public void draw(Graphics g) {
 		// Draw all game objects here
+
+		
+		world.draw(g);
+
+
 		player.draw(g);
 	}
 	
@@ -135,5 +148,8 @@ public class Handler {
 			e.printStackTrace();
 		}
 		return image;
+
 	}
+	
+
 }

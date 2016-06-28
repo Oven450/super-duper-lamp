@@ -14,7 +14,7 @@ public class LampPanel extends JPanel implements Runnable {
 
 	public static final int PWIDTH = 1024;
 	public static final int PHEIGHT = 576;
-	public static final int PERIOD = 33;
+	public static final int PERIOD = 0;
 
 	Thread animator;
 	boolean running = false;
@@ -25,6 +25,8 @@ public class LampPanel extends JPanel implements Runnable {
 	Graphics dbg;
 	
 	Handler handler;
+	private int frames = 0;
+	private long lastRead = 0;
 
 	public LampPanel() {
 		this.setDoubleBuffered(false);
@@ -50,26 +52,26 @@ public class LampPanel extends JPanel implements Runnable {
 			public void mousePressed(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					handler.mouseLeftClicked(e.getX(), e.getY());
-					System.out.println("1");
+					//System.out.println("1");
 				} else if (e.getButton() == MouseEvent.BUTTON2) {
 					handler.mouseMiddleClicked(e.getX(), e.getY());
-					System.out.println("2");
+					//System.out.println("2");
 				} else if (e.getButton() == MouseEvent.BUTTON3) {
 					handler.mouseRightClicked(e.getX(), e.getY());
-					System.out.println("3");
+					//System.out.println("3");
 				}
 			}
 			
 			public void mouseReleased(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					handler.mouseLeftReleased(e.getX(), e.getY());
-					System.out.println("1");
+					//System.out.println("1");
 				} else if (e.getButton() == MouseEvent.BUTTON2) {
 					handler.mouseMiddleReleased(e.getX(), e.getY());
-					System.out.println("2");
+					//System.out.println("2");
 				} else if (e.getButton() == MouseEvent.BUTTON3) {
 					handler.mouseRightReleased(e.getX(), e.getY());
-					System.out.println("3");
+					//System.out.println("3");
 				}
 			}
 		});
@@ -140,6 +142,14 @@ public class LampPanel extends JPanel implements Runnable {
 			gameUpdate();
 			gameRender();
 			paintScreen();
+			
+			if (System.nanoTime() - lastRead > 1000000000) {
+				lastRead = System.nanoTime();
+				System.out.println(frames + " FPS");
+				frames = 1;
+			} else {
+				frames++;
+			}
 
 			afterTime = System.nanoTime();
 			timeDiff = afterTime - beforeTime;
