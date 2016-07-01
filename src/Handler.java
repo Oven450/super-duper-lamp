@@ -8,71 +8,99 @@ import java.util.ArrayList;
 public class Handler {
 
 	LampPanel panel;
-	World world;
 
-	private int mouseX, mouseY;
+	int mouseX, mouseY;
 	
-	private Player player;
+	boolean mouseMovedSinceLast = false;
+	
 
-	private boolean mouseLeftDown;
-	private boolean mouseMiddleDown;
-	private boolean mouseRightDown;
+	boolean mouseLeftDown;
+	boolean mouseMiddleDown;
+	boolean mouseRightDown;
 
 	// ArrayLists of the keys down in the current tick, the
 	// points that the mouse has been pressed at since the last tick, and the
 	// points where the mouse has been released at since the last tick
 
-	private ArrayList<Integer> keysDown = new ArrayList<Integer>();
-	private ArrayList<Point> clickPoints = new ArrayList<Point>();
-	private ArrayList<Point> releasePoints = new ArrayList<Point>();
+	ArrayList<Integer> keysDown = new ArrayList<Integer>();
+	ArrayList<Point> clickPoints = new ArrayList<Point>();
+	ArrayList<Point> releasePoints = new ArrayList<Point>();
+	
+	Handler currHandler;
 
 
-	private BufferedImageLoader imageLoader;
+	BufferedImageLoader imageLoader;
+	
+	MainMenu menu;
 
 	public Handler(LampPanel panel) {
 		this.panel = panel;
 		this.imageLoader = new BufferedImageLoader();
-		this.player = new Player(this);
 		// Instantiate all game objects here
-		world = new World(this);
 
+		menu = new MainMenu (this);
 	}
 
 	public void keyPressed(int keyCode) {
+		if (currHandler != null) {
+			currHandler.keyPressed(keyCode);
+		}
 		if (!keysDown.contains(keyCode)) {
 			keysDown.add(keyCode);
 		}
 	}
 
 	public void keyReleased(int keyCode) {
+		if (currHandler != null) {
+			currHandler.keyReleased(keyCode);
+		}
 		if (keysDown.contains(keyCode)) {
 			keysDown.remove((Integer) keyCode);
 		}
 	}
 
 	public void mouseLeftClicked(int x, int y) {
+		if (currHandler != null) {
+			currHandler.mouseLeftClicked(x, y);
+		}
 		mouseLeftDown = true;
 		clickPoints.add(new Point(x, y));
 	}
 
 	public void mouseRightClicked(int x, int y) {
+		if (currHandler != null) {
+			currHandler.mouseRightClicked(x, y);
+		}
 		mouseRightDown = true;
 	}
 
 	public void mouseMiddleClicked(int x, int y) {
+		if (currHandler != null) {
+			currHandler.mouseMiddleClicked(x, y);
+		}
 		mouseMiddleDown = true;
 	}
 
 	public void mouseLeftReleased(int x, int y) {
+		if (currHandler != null) {
+			currHandler.mouseLeftReleased(x, y);
+		}
 		mouseLeftDown = false;
 		releasePoints.add(new Point(x, y));
+
 	}
 
 	public void mouseRightReleased(int x, int y) {
+		if (currHandler != null) {
+			currHandler.mouseRightReleased(x, y);
+		}
 		mouseRightDown = false;
 	}
 
 	public void mouseMiddleReleased(int x, int y) {
+		if (currHandler != null) {
+			currHandler.mouseMiddleReleased(x, y);
+		}
 		mouseMiddleDown = false;
 	}
 
@@ -80,6 +108,11 @@ public class Handler {
 		for (int i = 0; i < clickPoints.size(); i++) {
 			Point click = clickPoints.get(i);
 			// Call mouseClicked on game objects at these points
+			if (currHandler != null) {
+				currHandler.mouseLeftClicked((int) click.getX(), (int) click.getY());
+			} else {
+				menu.mouseClicked(click);
+			}
 			System.out.println(click);
 		}
 		clickPoints = new ArrayList<Point>();
@@ -90,11 +123,17 @@ public class Handler {
 		}
 		releasePoints = new ArrayList<Point>();
 
-		// Update all game objects here		
-		world.update();
-
-
-		player.update();
+		// Update all game objects here	
+		
+		if (currHandler != null) {
+			currHandler.update();
+		} else {
+			if (mouseMovedSinceLast) {
+				menu.mouseMoved(new Point(this.mouseX, this.mouseY));
+			}
+		}
+		
+		mouseMovedSinceLast = false;
 
 	}
 
@@ -103,8 +142,13 @@ public class Handler {
 	}
 
 	public void mouseMoved(int x, int y) {
+		if (currHandler != null) {
+			currHandler.mouseMoved(x, y);
+		}
+		
 		this.mouseX = x;
 		this.mouseY = y;
+		mouseMovedSinceLast = true;
 	}
 
 	public boolean isMouseLeftDown() {
@@ -133,10 +177,11 @@ public class Handler {
 		// Draw all game objects here
 
 		
-		world.draw(g);
-
-
-		player.draw(g);
+		if (currHandler != null) {
+			currHandler.draw(g);
+		} else {
+			menu.draw(g);
+		}
 	}
 	
 	public BufferedImage loadImage(String path) {
@@ -149,6 +194,14 @@ public class Handler {
 		}
 		return image;
 
+	}
+	
+	public void startGame() {
+		this.currHandler = new GameHandler(panel);
+	}
+	
+	public LampPanel getPanel() {
+		return panel;
 	}
 	
 

@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -215,5 +216,6 @@ public class LampPanel extends JPanel implements Runnable {
 			System.out.println("Graphics context error: " + e);
 		}
 	} // end of paintScreen()
+	
 
 }
