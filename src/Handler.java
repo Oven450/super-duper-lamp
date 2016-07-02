@@ -8,34 +8,34 @@ import java.util.ArrayList;
 public class Handler {
 
 	LampPanel panel;
-	World world;
 
-	private int mouseX, mouseY;
+	int mouseX, mouseY;
 	
-	private Player player;
+	boolean mouseMovedSinceLast = false;
+	
 
-	private boolean mouseLeftDown;
-	private boolean mouseMiddleDown;
-	private boolean mouseRightDown;
+	boolean mouseLeftDown;
+	boolean mouseMiddleDown;
+	boolean mouseRightDown;
 
 	// ArrayLists of the keys down in the current tick, the
 	// points that the mouse has been pressed at since the last tick, and the
 	// points where the mouse has been released at since the last tick
 
-	private ArrayList<Integer> keysDown = new ArrayList<Integer>();
-	private ArrayList<Point> clickPoints = new ArrayList<Point>();
-	private ArrayList<Point> releasePoints = new ArrayList<Point>();
+	ArrayList<Integer> keysDown = new ArrayList<Integer>();
+	ArrayList<Point> clickPoints = new ArrayList<Point>();
+	ArrayList<Point> releasePoints = new ArrayList<Point>();
 
-
-	private BufferedImageLoader imageLoader;
+	BufferedImageLoader imageLoader;
+	
+	MainMenu menu;
 
 	public Handler(LampPanel panel) {
 		this.panel = panel;
 		this.imageLoader = new BufferedImageLoader();
-		this.player = new Player(this);
 		// Instantiate all game objects here
-		world = new World(this);
 
+		menu = new MainMenu (this);
 	}
 
 	public void keyPressed(int keyCode) {
@@ -66,6 +66,7 @@ public class Handler {
 	public void mouseLeftReleased(int x, int y) {
 		mouseLeftDown = false;
 		releasePoints.add(new Point(x, y));
+
 	}
 
 	public void mouseRightReleased(int x, int y) {
@@ -80,22 +81,46 @@ public class Handler {
 		for (int i = 0; i < clickPoints.size(); i++) {
 			Point click = clickPoints.get(i);
 			// Call mouseClicked on game objects at these points
-			System.out.println(click);
+			mouseClickedGO(click);
+			
 		}
 		clickPoints = new ArrayList<Point>();
 		for (int i = 0; i < releasePoints.size(); i++) {
 			Point release = releasePoints.get(i);
 			// Call mouseReleased on game objects at these points
+			mouseReleasedGO(release);
 
 		}
 		releasePoints = new ArrayList<Point>();
 
-		// Update all game objects here		
-		world.update();
+		// Update all game objects here	
+		
+		
+		
+		if (mouseMovedSinceLast) {
+			mouseMovedGO(new Point(mouseX, mouseY));
+		}
+		
+		updateGO();
+		
+		mouseMovedSinceLast = false;
 
-
-		player.update();
-
+	}
+	
+	public void mouseClickedGO(Point p) {
+		
+	}
+	
+	public void mouseReleasedGO(Point p) {
+		
+	}
+	
+	public void mouseMovedGO(Point p) {
+		
+	}
+	
+	public void updateGO() {
+		
 	}
 
 	public Point getMouseLoc() {
@@ -103,8 +128,10 @@ public class Handler {
 	}
 
 	public void mouseMoved(int x, int y) {
+		
 		this.mouseX = x;
 		this.mouseY = y;
+		mouseMovedSinceLast = true;
 	}
 
 	public boolean isMouseLeftDown() {
@@ -132,11 +159,6 @@ public class Handler {
 	public void draw(Graphics g) {
 		// Draw all game objects here
 
-		
-		world.draw(g);
-
-
-		player.draw(g);
 	}
 	
 	public BufferedImage loadImage(String path) {
@@ -149,6 +171,10 @@ public class Handler {
 		}
 		return image;
 
+	}
+	
+	public LampPanel getPanel() {
+		return panel;
 	}
 	
 
