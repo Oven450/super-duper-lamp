@@ -177,5 +177,9 @@ public class Handler {
 		return panel;
 	}
 	
+	public void toMainMenu() {
+		panel.toMainMenu();
+	}
+	
 
 }

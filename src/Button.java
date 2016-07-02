@@ -1,11 +1,12 @@
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-
-import java.awt.Cursor;
 
 
 public class Button {
@@ -95,7 +96,11 @@ public class Button {
 			FontMetrics fm = g.getFontMetrics();
 			g.setColor(Color.WHITE);
 			
-			g.drawString(this.text, (int)(this.x + this.width / 2 - fm.stringWidth(text) / 2), (int)(this.y + this.height / 2 + (fm.getAscent() / 3)));
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setRenderingHint(
+			        RenderingHints.KEY_TEXT_ANTIALIASING,
+			        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2d.drawString(this.text, (int)(this.x + this.width / 2 - fm.stringWidth(text) / 2), (int)(this.y + this.height / 2 + (fm.getAscent() / 2.7)));
 		}
 		
 	}

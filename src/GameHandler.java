@@ -76,9 +76,5 @@ public class GameHandler extends Handler {
 		paused = false;
 	}
 	
-	public void toMainMenu() {
-		this.panel.toMainMenu();
-	}
-	
 
 }

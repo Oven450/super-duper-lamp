@@ -250,8 +250,12 @@ public class LampPanel extends JPanel implements Runnable {
 	}
 
 	public void toMainMenu() {
-		this.currHandler = null;
+		this.currHandler = menuHandler;
 		
+	}
+
+	public void startWorldCollisionEditor() {
+		this.currHandler = new WorldCollisionHandler(this);
 	}
 
 }
