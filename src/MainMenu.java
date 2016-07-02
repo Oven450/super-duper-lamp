@@ -10,6 +10,7 @@ public class MainMenu extends Menu {
 	
 	public MainMenu (Handler handler) {
 		super(handler);
+		
 		this.buttons.add(new Button(0, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 - 50, 300, 60, new Color(15, 150, 50), "Start Game", this));
 		this.buttons.add(new Button(1, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 + 25, 300, 60, new Color(15, 150, 50), "Quit", this));
 	}
@@ -18,7 +19,7 @@ public class MainMenu extends Menu {
 	public void execute(int id) {
 		switch (id) {
 		case 0:
-			handler.startGame();
+			((MainMenuHandler) handler).startGame();
 			break;
 		case 1:
 			handler.getPanel().stopGame();

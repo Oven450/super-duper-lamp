@@ -20,30 +20,30 @@ public class GameHandler extends Handler {
 		pauseMenu = new PauseMenu(this);
 	}
 	
-	public void update() {
-		for (int i = 0; i < clickPoints.size(); i++) {
-			Point click = clickPoints.get(i);
-			// Call mouseClicked on game objects at these points
-			if (!paused) {
-				
-			} else {
-				pauseMenu.mouseClicked(click);
-			}
-			System.out.println(click);
+	@Override
+	public void mouseClickedGO(Point p) {
+		if (!paused) {
+			
+		} else {
+			pauseMenu.mouseClicked(p);
 		}
-		
-		if (mouseMovedSinceLast) {
-			if (paused) {
-				pauseMenu.mouseMoved(new Point(mouseX, mouseY));
-			}
+		System.out.println(p);
+	}
+	
+	@Override
+	public void mouseMovedGO(Point p) {
+		if (paused) {
+			pauseMenu.mouseMoved(new Point(mouseX, mouseY));
 		}
+	}
+	
 		
+	@Override
+	public void updateGO() {
 		if (!paused) {
 			world.update();
 			player.update();
 		}
-		
-		
 		
 		if (this.keyDown(KeyEvent.VK_ESCAPE) && escapeable) {
 			escapeable = false;
@@ -76,8 +76,8 @@ public class GameHandler extends Handler {
 		paused = false;
 	}
 	
-	public void setCurrentHandlerAsNull() {
-		this.panel.handler.currHandler = null;
+	public void toMainMenu() {
+		this.panel.toMainMenu();
 	}
 	
 

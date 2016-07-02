@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -13,9 +12,10 @@ import javax.swing.JPanel;
 
 public class LampPanel extends JPanel implements Runnable {
 
+	private static final long serialVersionUID = 8567230218593415991L;
 	public static final int PWIDTH = 1024;
 	public static final int PHEIGHT = 576;
-	public static final int PERIOD = 0;
+	public static final int PERIOD = 33333333;
 
 	Thread animator;
 	boolean running = false;
@@ -25,9 +25,11 @@ public class LampPanel extends JPanel implements Runnable {
 	Image dbImage;
 	Graphics dbg;
 	
-	Handler handler;
+	Handler currHandler;
 	private int frames = 0;
 	private long lastRead = 0;
+	
+	MainMenuHandler menuHandler;
 
 	public LampPanel() {
 		this.setDoubleBuffered(false);
@@ -37,41 +39,59 @@ public class LampPanel extends JPanel implements Runnable {
 		setFocusable(true);
 		requestFocus();
 		
-		this.handler = new Handler(this);
+		this.menuHandler = new MainMenuHandler(this);
+		this.currHandler = menuHandler;
+		
 		
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				handler.keyPressed(e.getKeyCode());
+				if (currHandler != null) {
+					currHandler.keyPressed(e.getKeyCode());
+				}
 			}
 			
 			public void keyReleased(KeyEvent e) {
-				handler.keyReleased(e.getKeyCode());
+				if (currHandler != null) {
+					currHandler.keyReleased(e.getKeyCode());
+				}
 			}
 		});
 		
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
-					handler.mouseLeftClicked(e.getX(), e.getY());
+					if (currHandler != null) {
+						currHandler.mouseLeftClicked(e.getX(), e.getY());
+					}
 					//System.out.println("1");
 				} else if (e.getButton() == MouseEvent.BUTTON2) {
-					handler.mouseMiddleClicked(e.getX(), e.getY());
+					if (currHandler != null) {
+						currHandler.mouseMiddleClicked(e.getX(), e.getY());
+					}
 					//System.out.println("2");
 				} else if (e.getButton() == MouseEvent.BUTTON3) {
-					handler.mouseRightClicked(e.getX(), e.getY());
+					if (currHandler != null) {
+						currHandler.mouseRightClicked(e.getX(), e.getY());
+					}
 					//System.out.println("3");
 				}
 			}
 			
 			public void mouseReleased(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
-					handler.mouseLeftReleased(e.getX(), e.getY());
+					if (currHandler != null) {
+						currHandler.mouseLeftReleased(e.getX(), e.getY());
+					}
 					//System.out.println("1");
 				} else if (e.getButton() == MouseEvent.BUTTON2) {
-					handler.mouseMiddleReleased(e.getX(), e.getY());
+					if (currHandler != null) {
+						currHandler.mouseMiddleReleased(e.getX(), e.getY());
+					}
 					//System.out.println("2");
 				} else if (e.getButton() == MouseEvent.BUTTON3) {
-					handler.mouseRightReleased(e.getX(), e.getY());
+					if (currHandler != null) {
+						currHandler.mouseRightReleased(e.getX(), e.getY());
+					}
 					//System.out.println("3");
 				}
 			}
@@ -79,11 +99,15 @@ public class LampPanel extends JPanel implements Runnable {
 		
 		addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent e) {
-				handler.mouseMoved(e.getX(), e.getY());
+				if (currHandler != null) {
+					currHandler.mouseMoved(e.getX(), e.getY());
+				}
 			}
 			
 			public void mouseDragged(MouseEvent e) {
-				handler.mouseMoved(e.getX(), e.getY());
+				if (currHandler != null) {
+					currHandler.mouseMoved(e.getX(), e.getY());
+				}
 			}
 		});
 	}
@@ -131,9 +155,9 @@ public class LampPanel extends JPanel implements Runnable {
 	/* The frames of the animation are drawn inside the while loop. */
 	{
 		long beforeTime, afterTime, timeDiff, sleepTime;
-		long overSleepTime = 0L;
-		int noDelays = 0;
-		long excess = 0L;
+		//long overSleepTime = 0L;
+		//int noDelays = 0;
+		//long excess = 0L;
 
 		beforeTime = System.nanoTime();
 
@@ -161,10 +185,10 @@ public class LampPanel extends JPanel implements Runnable {
 					Thread.sleep(sleepTime / 1000000L); // nano -> ms
 				} catch (InterruptedException ex) {
 				}
-				overSleepTime = (System.nanoTime() - afterTime) - sleepTime;
+				//overSleepTime = (System.nanoTime() - afterTime) - sleepTime;
 			} else { // sleepTime <= 0; the frame took longer than the period
-				excess -= sleepTime; // store excess time value
-				overSleepTime = 0L;
+				//excess -= sleepTime; // store excess time value
+				//overSleepTime = 0L;
 				try {
 					Thread.sleep(5); // nano -> ms
 				} catch (InterruptedException ex) {
@@ -181,7 +205,9 @@ public class LampPanel extends JPanel implements Runnable {
 
 	private void gameUpdate() {
 		if (!isPaused && !gameOver) {
-			handler.update();
+			if (currHandler != null) {
+				currHandler.update();
+			}
 		}
 	} // end of gameUpdate()
 
@@ -199,7 +225,9 @@ public class LampPanel extends JPanel implements Runnable {
 		dbg.setColor(Color.white);
 		dbg.fillRect(0, 0, PWIDTH, PHEIGHT);
 		
-		handler.draw(dbg);
+		if (currHandler != null) {
+			currHandler.draw(dbg);
+		}
 		
 	}
 
@@ -217,5 +245,13 @@ public class LampPanel extends JPanel implements Runnable {
 		}
 	} // end of paintScreen()
 	
+	public void startGameHandler() {
+		this.currHandler = new GameHandler(this);
+	}
+
+	public void toMainMenu() {
+		this.currHandler = null;
+		
+	}
 
 }

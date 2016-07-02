@@ -25,7 +25,6 @@ public class Button {
 	boolean active = false;
 	
 	public Button(int id, int x, int y, int width, int height, Color color, String text, Menu menu) {
-		System.out.println("Button created");
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -62,8 +61,9 @@ public class Button {
 	
 	public void mouseClicked(Point p) {
 		if (p.getX() > x && p.getY() > y && p.getX() < x + width && p.getY() < y + height) {
-			menu.execute(id);
 			menu.handler.getPanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			menu.execute(id);
+			
 		}
 	}
 	
@@ -82,7 +82,6 @@ public class Button {
 	}
 	
 	public void draw(Graphics g) {
-		System.out.println("Button draw called");
 		if (image != null) {
 			g.drawImage(image, x, y, null);
 		} else {

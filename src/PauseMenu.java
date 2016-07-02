@@ -17,7 +17,7 @@ public class PauseMenu extends Menu {
 	public void execute(int id) {
 		switch (id) {
 		case 0:
-			((GameHandler) handler).setCurrentHandlerAsNull();
+			((GameHandler) handler).toMainMenu();
 			break;
 		case 1:
 			((GameHandler) handler).resume();

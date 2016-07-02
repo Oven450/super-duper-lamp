@@ -18,7 +18,6 @@ public abstract class Menu {
 	public abstract void execute(int id);
 	
 	public void draw(Graphics g) {
-		System.out.println("Draw called");
 		for (int i = 0; i < buttons.size(); i++) {
 			buttons.get(i).draw(g);
 		}
