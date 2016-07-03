@@ -2,6 +2,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -16,6 +19,7 @@ public class WorldCollisionWorld {
 		
 		dispImage = handler.loadImage("level.png");
 		segments = new ArrayList<WorldCollisionSegment>();
+		readCollisionData();
 		
 	}
 	
@@ -46,6 +50,36 @@ public class WorldCollisionWorld {
 	
 	public void addSegment(double x1, double y1, double x2, double y2) {
 		segments.add(new WorldCollisionSegment(x1, y1, x2, y2, (Handler) handler));
+	}
+	
+	public void readCollisionData() {
+		ReadFile fileReader = new ReadFile("/world-collisions.txt", true);
+		String[] lines = null;
+		try {
+			lines = fileReader.openFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (int i = 1; i < Integer.parseInt(lines[0]) + 1; i++) {
+			String[] line = lines[i].split(" ");
+			addSegment(Double.parseDouble(line[0]), Double.parseDouble(line[1]), Double.parseDouble(line[2]), Double.parseDouble(line[3]));
+		}
+	}
+	
+	public void saveCollisionData() {
+		try {
+			PrintWriter writer = new PrintWriter(getClass().getResource("/world-collisions.txt").getPath(), "UTF-8");
+			writer.println(segments.size());
+			for (int i = 0; i < segments.size(); i++) {
+				WorldCollisionSegment seg = segments.get(i);
+				DecimalFormat df = new DecimalFormat("0.000");
+				writer.println(df.format(seg.getX1()) + " " + df.format(seg.getY1()) + " " + df.format(seg.getX2()) + " " + df.format(seg.getY2()));
+			}
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

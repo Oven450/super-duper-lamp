@@ -112,6 +112,9 @@ public class WorldCollisionHandler extends Handler {
 		if (this.keyDown(KeyEvent.VK_S)) {
 			centerY += 10;
 		}
+		if (this.keyDown(KeyEvent.VK_CONTROL) && this.keyDown(KeyEvent.VK_S)) {
+			world.saveCollisionData();
+		}
 	}
 	
 	@Override
