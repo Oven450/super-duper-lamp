@@ -22,6 +22,7 @@ public class Button {
 	BufferedImage image = null;
 	int id;
 	String text;
+	Font font;
 	
 	boolean active = false;
 	
@@ -48,6 +49,7 @@ public class Button {
 		this.menu = menu;
 		this.id = id;
 		this.text = text;
+		this.font = new Font("Impact", Font.PLAIN, 28);
 	}
 	
 	public Button(int id, int x, int y, BufferedImage image, Menu menu) {
@@ -92,7 +94,9 @@ public class Button {
 				g.setColor(color);
 			}
 			g.fillRoundRect(x, y, width, height, 10, 10);
-			g.setFont(new Font("Impact", Font.PLAIN, 28));
+			g.setColor(Color.BLACK);
+			g.drawRoundRect(x, y, width, height, 10, 10);
+			g.setFont(font);
 			FontMetrics fm = g.getFontMetrics();
 			g.setColor(Color.WHITE);
 			
@@ -103,6 +107,11 @@ public class Button {
 			g2d.drawString(this.text, (int)(this.x + this.width / 2 - fm.stringWidth(text) / 2), (int)(this.y + this.height / 2 + (fm.getAscent() / 2.7)));
 		}
 		
+	}
+	
+	
+	public void setFont(Font font) {
+		this.font = font;
 	}
 	
 }

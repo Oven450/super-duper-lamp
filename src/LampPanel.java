@@ -1,12 +1,16 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
 
@@ -95,6 +99,19 @@ public class LampPanel extends JPanel implements Runnable {
 					//System.out.println("3");
 				}
 			}
+			
+		});
+		
+		addMouseWheelListener(new MouseWheelListener() {
+
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				if (currHandler != null) {
+					currHandler.mouseWheelRotated(e.getWheelRotation());
+				}
+				
+			}
+			
 		});
 		
 		addMouseMotionListener(new MouseMotionAdapter() {
@@ -221,13 +238,15 @@ public class LampPanel extends JPanel implements Runnable {
 				dbg = dbImage.getGraphics();
 		}
 
-		// clear the background
-		dbg.setColor(Color.white);
+		
+		dbg.setColor(new Color(255, 255, 255));
+		((Graphics2D) dbg).setTransform(new AffineTransform(1, 0, 0, 1, 0, 0));
 		dbg.fillRect(0, 0, PWIDTH, PHEIGHT);
 		
-		if (currHandler != null) {
-			currHandler.draw(dbg);
-		}
+		// clear the background
+				if (currHandler != null) {
+					currHandler.draw(dbg);
+				}
 		
 	}
 
