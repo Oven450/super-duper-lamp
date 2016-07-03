@@ -115,6 +115,9 @@ public class WorldCollisionHandler extends Handler {
 		if (this.keyDown(KeyEvent.VK_CONTROL) && this.keyDown(KeyEvent.VK_S)) {
 			world.saveCollisionData();
 		}
+		if (this.keyDown(KeyEvent.VK_ESCAPE) && secondClick) {
+			secondClick = false;
+		}
 	}
 	
 	@Override
@@ -128,6 +131,10 @@ public class WorldCollisionHandler extends Handler {
 	
 	public void zoomOut() {
 		scale *= 1.5;
+	}
+
+	public void deleteLast() {
+		world.deleteLastSegment();
 	}
 
 }

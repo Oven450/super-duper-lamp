@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.text.DecimalFormat;
 
 
 public class WorldCollisionSegment {
@@ -42,6 +43,12 @@ public class WorldCollisionSegment {
 
 	public double getY2() {
 		return y2;
+	}
+	
+	@Override
+	public String toString() {
+		DecimalFormat df = new DecimalFormat("0.000");
+		return df.format(x1) + " " + df.format(y1) + " " + df.format(x2) + " " + df.format(y2);
 	}
 	
 }

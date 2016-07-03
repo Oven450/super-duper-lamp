@@ -60,10 +60,13 @@ public class WorldCollisionWorld {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for (int i = 1; i < Integer.parseInt(lines[0]) + 1; i++) {
-			String[] line = lines[i].split(" ");
-			addSegment(Double.parseDouble(line[0]), Double.parseDouble(line[1]), Double.parseDouble(line[2]), Double.parseDouble(line[3]));
+		if (lines != null && lines.length > 1) {
+			for (int i = 1; i < Integer.parseInt(lines[0]) + 1; i++) {
+				String[] line = lines[i].split(" ");
+				addSegment(Double.parseDouble(line[0]), Double.parseDouble(line[1]), Double.parseDouble(line[2]), Double.parseDouble(line[3]));
+			}
 		}
+		
 	}
 	
 	public void saveCollisionData() {
@@ -72,14 +75,17 @@ public class WorldCollisionWorld {
 			writer.println(segments.size());
 			for (int i = 0; i < segments.size(); i++) {
 				WorldCollisionSegment seg = segments.get(i);
-				DecimalFormat df = new DecimalFormat("0.000");
-				writer.println(df.format(seg.getX1()) + " " + df.format(seg.getY1()) + " " + df.format(seg.getX2()) + " " + df.format(seg.getY2()));
+				writer.println(seg.toString());
 			}
 			writer.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void deleteLastSegment() {
+		segments.remove(segments.size() - 1);
 	}
 	
 }
