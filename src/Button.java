@@ -1,11 +1,12 @@
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-
-import java.awt.Cursor;
 
 
 public class Button {
@@ -21,6 +22,7 @@ public class Button {
 	BufferedImage image = null;
 	int id;
 	String text;
+	Font font;
 	
 	boolean active = false;
 	
@@ -47,6 +49,7 @@ public class Button {
 		this.menu = menu;
 		this.id = id;
 		this.text = text;
+		this.font = new Font("Impact", Font.PLAIN, 28);
 	}
 	
 	public Button(int id, int x, int y, BufferedImage image, Menu menu) {
@@ -91,13 +94,24 @@ public class Button {
 				g.setColor(color);
 			}
 			g.fillRoundRect(x, y, width, height, 10, 10);
-			g.setFont(new Font("Impact", Font.PLAIN, 28));
+			g.setColor(Color.BLACK);
+			g.drawRoundRect(x, y, width, height, 10, 10);
+			g.setFont(font);
 			FontMetrics fm = g.getFontMetrics();
 			g.setColor(Color.WHITE);
 			
-			g.drawString(this.text, (int)(this.x + this.width / 2 - fm.stringWidth(text) / 2), (int)(this.y + this.height / 2 + (fm.getAscent() / 3)));
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setRenderingHint(
+			        RenderingHints.KEY_TEXT_ANTIALIASING,
+			        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2d.drawString(this.text, (int)(this.x + this.width / 2 - fm.stringWidth(text) / 2), (int)(this.y + this.height / 2 + (fm.getAscent() / 2.7)));
 		}
 		
+	}
+	
+	
+	public void setFont(Font font) {
+		this.font = font;
 	}
 	
 }

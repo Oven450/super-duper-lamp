@@ -31,5 +31,10 @@ public class MainMenuHandler extends Handler {
 	public void mouseMovedGO(Point p) {
 		menu.mouseMoved(p);
 	}
+
+	public void startWorldCollisionEditor() {
+		this.panel.startWorldCollisionEditor();
+		
+	}
 	
 }

@@ -12,7 +12,8 @@ public class MainMenu extends Menu {
 		super(handler);
 		
 		this.buttons.add(new Button(0, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 - 50, 300, 60, new Color(15, 150, 50), "Start Game", this));
-		this.buttons.add(new Button(1, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 + 25, 300, 60, new Color(15, 150, 50), "Quit", this));
+		this.buttons.add(new Button(1, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 + 25, 300, 60, new Color(15, 150, 50), "Edit World Collisions", this));
+		this.buttons.add(new Button(2, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 + 100, 300, 60, new Color(15, 150, 50), "Quit", this));
 	}
 
 	@Override
@@ -22,6 +23,9 @@ public class MainMenu extends Menu {
 			((MainMenuHandler) handler).startGame();
 			break;
 		case 1:
+			((MainMenuHandler) handler).startWorldCollisionEditor();
+			break;
+		case 2:
 			handler.getPanel().stopGame();
 			break;
 		default:

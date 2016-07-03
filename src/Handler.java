@@ -13,6 +13,8 @@ public class Handler {
 	
 	boolean mouseMovedSinceLast = false;
 	
+	int mouseWheelRotationSinceLast = 0;
+	
 
 	boolean mouseLeftDown;
 	boolean mouseMiddleDown;
@@ -76,6 +78,10 @@ public class Handler {
 	public void mouseMiddleReleased(int x, int y) {
 		mouseMiddleDown = false;
 	}
+	
+	public void mouseWheelRotated(int wheelRotation) {
+		mouseWheelRotationSinceLast += wheelRotation;
+	}
 
 	public void update() {
 		for (int i = 0; i < clickPoints.size(); i++) {
@@ -101,9 +107,14 @@ public class Handler {
 			mouseMovedGO(new Point(mouseX, mouseY));
 		}
 		
+		if (mouseWheelRotationSinceLast != 0) {
+			mouseRotatedGO(mouseWheelRotationSinceLast);
+		}
+		
 		updateGO();
 		
 		mouseMovedSinceLast = false;
+		mouseWheelRotationSinceLast = 0;
 
 	}
 	
@@ -116,6 +127,10 @@ public class Handler {
 	}
 	
 	public void mouseMovedGO(Point p) {
+		
+	}
+	
+	public void mouseRotatedGO(int rotation) {
 		
 	}
 	
@@ -176,6 +191,12 @@ public class Handler {
 	public LampPanel getPanel() {
 		return panel;
 	}
+	
+	public void toMainMenu() {
+		panel.toMainMenu();
+	}
+
+	
 	
 
 }

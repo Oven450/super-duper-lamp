@@ -29,7 +29,7 @@ public abstract class Menu {
 		}
 	}
 	
-	public void mouseMoved(Point p) {
+	public boolean mouseMoved(Point p) {
 		boolean overButton = false;
 		for (int i = 0; i < buttons.size(); i++) {
 			if (buttons.get(i).mouseMoved(p)) {
@@ -39,6 +39,7 @@ public abstract class Menu {
 		if (!overButton) {
 			handler.getPanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
+		return overButton;
 	}
 	
 }
