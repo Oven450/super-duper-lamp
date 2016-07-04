@@ -44,10 +44,6 @@ public class WorldCollisionWorld {
 		g2d.setTransform(transform);
 	}
 	
-	public void tempDraw(WorldCollisionSegment temp, Graphics g) {
-		
-	}
-	
 	public void addSegment(double x1, double y1, double x2, double y2) {
 		segments.add(new WorldCollisionSegment(x1, y1, x2, y2, (Handler) handler));
 	}

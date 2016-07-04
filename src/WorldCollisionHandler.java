@@ -72,7 +72,12 @@ public class WorldCollisionHandler extends Handler {
 				firstClickY = (world.dispImage.getHeight() / 2 + -(centerY - p.getY()) * scale);
 			} else {
 				secondClick = false;
-				world.addSegment(firstClickX, firstClickY, (world.dispImage.getWidth() / 2 + -(centerX - p.getX()) * scale), (world.dispImage.getHeight() / 2 + -(centerY - p.getY()) * scale));
+				double x = (world.dispImage.getWidth() / 2 + -(centerX - p.getX()) * scale);
+				double y = (world.dispImage.getHeight() / 2 + -(centerY - p.getY()) * scale);
+				world.addSegment(firstClickX, firstClickY, x, y);
+				secondClick = true;
+				firstClickX = x;
+				firstClickY = y;
 			}
 		}
 		mouseMovedSinceClick = false;

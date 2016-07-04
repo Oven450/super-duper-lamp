@@ -75,6 +75,10 @@ public class GameHandler extends Handler {
 	public void resume() {
 		paused = false;
 	}
+
+	public World getWorld() {
+		return world;
+	}
 	
 
 }

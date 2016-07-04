@@ -25,8 +25,10 @@ public class Player {
 	private double x = 200;
 	private double y = 200;
 	
-	private double yVel = 10;
-	private double initialYVel = yVel;
+	private double xvel;
+	private double yvel;
+	private double jumpYVel = -20;
+	private MoveVector drawMV;
 	
 	public Player (Handler handler) {
 		this.handler = handler;
@@ -34,37 +36,60 @@ public class Player {
 		
 		gameState = STANDING;
 		facing = RIGHT;
+		this.xvel = 0;
+		this.yvel = 0;
+		drawMV = new MoveVector(0, 0, 1, 1);
+		
 	}
 	
 	public void update() {
 		if (handler.keyDown(KeyEvent.VK_A)){
 			facing = LEFT;
-			x--;
+			xvel = -5;
 		} else if (handler.keyDown(KeyEvent.VK_D)){
 			facing = RIGHT;
-			x++;
-		} 
-		if(yVel == 0 && gameState != JUMPING){
+			xvel = 5;
+		} else {
+			xvel = 0;
+		}
+		if(yvel == 0 && gameState != JUMPING){
 			gameState = WALKING;
 		}
 		if(handler.keyDown(KeyEvent.VK_W)&& gameState != JUMPING){
+			yvel = jumpYVel;
 			gameState = JUMPING;
 			
 		}
-		if(gameState == JUMPING){
-			y -= yVel;
-			yVel-=1;
-		}
-		if(yVel < ((-1)*initialYVel)){
-			yVel = initialYVel;
-			gameState = STANDING;
+		//if(gameState == JUMPING){
+			yvel += 1;
+		//}
+		MoveVector mv = new MoveVector (this.x + 10, this.y + 40, this.x + 10 + xvel, this.y + 40 + yvel);
+		MoveVector rmv = ((GameHandler) handler).getWorld().testCollision(mv);
+		if (rmv == null) {
+			drawMV = mv;
+			y += yvel;
+			x += xvel;
+		} else {
+			if (rmv.y2 - rmv.y1 != yvel) {
+				if (yvel > 0) {
+					gameState = STANDING;
+				}
+				yvel = 0;
+			}
+			if (rmv.x2 - rmv.x1 != xvel) {
+				xvel = 0;
+			}
+			drawMV = rmv;
+			x += rmv.x2 - rmv.x1;
+			y += rmv.y2 - rmv.y1;
 		}
 	}
 	
 	public void draw(Graphics g) {
-		g.setColor(Color.CYAN);
+		g.setColor(Color.ORANGE);
 		g.fillRect((int)x, (int)y, 20, 40);
-		
+		//this.drawMV.draw(g);
+		(new MoveVector (this.x + 10, this.y + 40, this.x + 10.0001 + xvel, this.y + 40 + yvel)).draw(g);
 	}
 
 }
