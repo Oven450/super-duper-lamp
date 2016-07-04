@@ -31,7 +31,7 @@ public class World {
 		g.drawImage(dispImage, 0, 0, null);
 		((Graphics2D) g).setStroke(new BasicStroke(3, 0, 0));
 		for (int i = 0; i < segments.size(); i++) {
-			segments.get(i).draw(g);
+			//segments.get(i).draw(g);
 		}
 	}
 	

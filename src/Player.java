@@ -65,7 +65,7 @@ public class Player {
 			
 		}
 		//if(gameState == JUMPING){
-			yvel += 1;
+			yvel += 2;
 		//}
 		MoveVector mv = new MoveVector (this.x + 10, this.y + 40, this.x + 10 + xvel, this.y + 40 + yvel);
 		MoveVector rmv = ((GameHandler) handler).getWorld().testCollision(mv);
@@ -90,10 +90,10 @@ public class Player {
 	}
 	
 	public void draw(Graphics g) {
-		g.setColor(Color.ORANGE);
+		g.setColor(Color.CYAN);
 		g.fillRect((int)x, (int)y, 20, 40);
 		//this.drawMV.draw(g);
-		(new MoveVector (this.x + 10, this.y + 40, this.x + 10.0001 + xvel, this.y + 40 + yvel)).draw(g);
+		//(new MoveVector (this.x + 10, this.y + 40, this.x + 10.0001 + xvel, this.y + 40 + yvel)).draw(g);
 	}
 	public void attack(){
 		BufferedImage attackImages;

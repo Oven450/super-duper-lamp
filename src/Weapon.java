@@ -30,10 +30,10 @@ public class Weapon {
 	
 	public Weapon (Handler handler, int weapon){ //each weapon has a corresponding integer
 		this.handler = handler;
-		this.weaponSpritesheet = handler.loadImage("/weapons.png");
-		this.attackingSpritesheet = handler.loadImage("/attacks.png");
-		this.damage = damages.get(weapon);
-		this.name = names.get(weapon);
+		//this.weaponSpritesheet = handler.loadImage("/weapons.png"); I COMMENTED THESE OUT FOR TESTING PURPOSES
+		//this.attackingSpritesheet = handler.loadImage("/attacks.png");
+		//this.damage = damages.get(weapon);
+		//this.name = names.get(weapon);
 		this.weaponType = (weapon/10); //10 weapons of each type
 	}
 	
