@@ -8,6 +8,7 @@ public class Player {
 	
 	Handler handler;
 	BufferedImage spritesheet;
+	Weapon weapon;
 	
 	// Current game states for the player
 	
@@ -15,7 +16,7 @@ public class Player {
 	public static final int STANDING = 0;
 	public static final int WALKING = 1;
 	public static final int JUMPING = 2;
-	
+	public static final int ATTACKING =3;
 	// The current direction the player is facing
 	
 	private int facing;
@@ -33,7 +34,7 @@ public class Player {
 	public Player (Handler handler) {
 		this.handler = handler;
 		//this.spritesheet = handler.loadImage("/player.png");
-		
+		this.weapon = new Weapon(handler, 0);
 		gameState = STANDING;
 		facing = RIGHT;
 		this.xvel = 0;
@@ -43,6 +44,9 @@ public class Player {
 	}
 	
 	public void update() {
+		if(handler.keyDown(KeyEvent.VK_SPACE) && gameState != ATTACKING){
+			attack();
+		}
 		if (handler.keyDown(KeyEvent.VK_A)){
 			facing = LEFT;
 			xvel = -5;
@@ -90,6 +94,18 @@ public class Player {
 		g.fillRect((int)x, (int)y, 20, 40);
 		//this.drawMV.draw(g);
 		(new MoveVector (this.x + 10, this.y + 40, this.x + 10.0001 + xvel, this.y + 40 + yvel)).draw(g);
+	}
+	public void attack(){
+		BufferedImage attackImages;
+		if(gameState != JUMPING){
+			if(facing == LEFT){
+				attackImages = weapon.attackingSpritesheet.getSubimage(0, weapon.weaponType*3, 64*5, 64);//64 pixel images as test
+			} else{
+				attackImages = weapon.attackingSpritesheet.getSubimage(0, weapon.weaponType*3+1, 64*5, 64);
+			}
+		} else{
+			attackImages = weapon.attackingSpritesheet.getSubimage(0, weapon.weaponType*3 + 2, 64*5, 64);
+		}
 	}
 
 }

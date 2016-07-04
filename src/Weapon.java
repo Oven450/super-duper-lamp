@@ -1,0 +1,40 @@
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+public class Weapon {
+	
+	Handler handler;
+	public static ArrayList<Double> damages = new ArrayList<Double>();
+	public static ArrayList<String> names = new ArrayList<String>();
+	BufferedImage weaponSpritesheet; //filled with images of weapons
+	BufferedImage attackingSpritesheet; //Animations of different weapon type attacks (ie. long sword vs short sword etc.)
+	/*attackingSpritesheet Layout
+	 * WeaponType #1
+	 * Left attacking images
+	 * Right attacking images
+	 * Jumping attacking images
+	 * WeaponType #2
+	 * Left attacking images
+	 * Right attacking images
+	 * Jumping attacking images
+	 * etc...
+	 */
+	
+	public double damage = 100; //some starting damage (not even needed)
+	public String name = "Basic Sword";
+	
+	public int weaponType;
+	private final int SHORTWORD = 0;
+	private final int LONGSWORD = 1;
+	private final int KATANA = 2;//more can be added
+	
+	public Weapon (Handler handler, int weapon){ //each weapon has a corresponding integer
+		this.handler = handler;
+		this.weaponSpritesheet = handler.loadImage("/weapons.png");
+		this.attackingSpritesheet = handler.loadImage("/attacks.png");
+		this.damage = damages.get(weapon);
+		this.name = names.get(weapon);
+		this.weaponType = (weapon/10); //10 weapons of each type
+	}
+	
+}
