@@ -14,11 +14,13 @@ public class World {
 	Handler handler;
 	BufferedImage dispImage;
 	ArrayList<WorldCollisionSegment> segments;
+	BufferedImage lightmap;
 	
 	public World(Handler handler) {
 		this.handler = handler;
 		
-		dispImage = handler.loadImage("level.png");
+		dispImage = handler.loadImage("level2.png");
+		lightmap = handler.loadImage("lightmap.png");
 		segments = new ArrayList<WorldCollisionSegment>();
 		readCollisionData();
 	}
@@ -28,7 +30,8 @@ public class World {
 	}
 	
 	public void draw(Graphics g) {
-		g.drawImage(dispImage, 0, 0, null);
+		g.drawImage(dispImage, (int) (512-((GameHandler) handler).player.getX()), (int) (288-((GameHandler) handler).player.getY()), null);
+		g.drawImage(lightmap, 0, 0, null);
 		((Graphics2D) g).setStroke(new BasicStroke(3, 0, 0));
 		for (int i = 0; i < segments.size(); i++) {
 			//segments.get(i).draw(g);
@@ -36,7 +39,7 @@ public class World {
 	}
 	
 	public void readCollisionData() {
-		ReadFile fileReader = new ReadFile("/world-collisions.txt", true);
+		ReadFile fileReader = new ReadFile("/world-collisions2.txt", true);
 		String[] lines = null;
 		try {
 			lines = fileReader.openFile();

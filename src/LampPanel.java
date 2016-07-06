@@ -239,7 +239,7 @@ public class LampPanel extends JPanel implements Runnable {
 		}
 
 		
-		dbg.setColor(new Color(255, 255, 255));
+		dbg.setColor(new Color(0, 0, 0));
 		((Graphics2D) dbg).setTransform(new AffineTransform(1, 0, 0, 1, 0, 0));
 		dbg.fillRect(0, 0, PWIDTH, PHEIGHT);
 		

@@ -78,7 +78,7 @@ public class WorldCollisionSegment {
 	}
 	
 	public Point2D getPoint01FromPoint(double x, double y, double fromX, double fromY) {
-		double c = Math.sqrt(.25 / (Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2)));
+		double c = Math.sqrt(.1 / (Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2)));
 		double a = -c * (y2 - y1);
 		double b = c * (x2 - x1);
 		double yOnLine = y1 + ((fromX - x1) / (x2 - x1)) * (y2 - y1);
