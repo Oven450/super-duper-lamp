@@ -17,7 +17,7 @@ public class WorldCollisionWorld {
 	public WorldCollisionWorld(WorldCollisionHandler handler) {
 		this.handler = handler;
 		
-		dispImage = handler.loadImage("level.png");
+		dispImage = handler.loadImage("level2.png");
 		segments = new ArrayList<WorldCollisionSegment>();
 		readCollisionData();
 		
@@ -44,16 +44,12 @@ public class WorldCollisionWorld {
 		g2d.setTransform(transform);
 	}
 	
-	public void tempDraw(WorldCollisionSegment temp, Graphics g) {
-		
-	}
-	
 	public void addSegment(double x1, double y1, double x2, double y2) {
 		segments.add(new WorldCollisionSegment(x1, y1, x2, y2, (Handler) handler));
 	}
 	
 	public void readCollisionData() {
-		ReadFile fileReader = new ReadFile("/world-collisions.txt", true);
+		ReadFile fileReader = new ReadFile("/world-collisions2.txt", true);
 		String[] lines = null;
 		try {
 			lines = fileReader.openFile();
@@ -71,7 +67,7 @@ public class WorldCollisionWorld {
 	
 	public void saveCollisionData() {
 		try {
-			PrintWriter writer = new PrintWriter(getClass().getResource("/world-collisions.txt").getPath(), "UTF-8");
+			PrintWriter writer = new PrintWriter(getClass().getResource("/world-collisions2.txt").getPath(), "UTF-8");
 			writer.println(segments.size());
 			for (int i = 0; i < segments.size(); i++) {
 				WorldCollisionSegment seg = segments.get(i);
