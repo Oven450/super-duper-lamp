@@ -17,8 +17,8 @@ import javax.swing.JPanel;
 public class LampPanel extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 8567230218593415991L;
-	public static final int PWIDTH = 1024;
-	public static final int PHEIGHT = 576;
+	public static int PWIDTH = 1024;
+	public static int PHEIGHT = 576;
 	public static final int PERIOD = 33333333;
 
 	Thread animator;
@@ -275,6 +275,13 @@ public class LampPanel extends JPanel implements Runnable {
 
 	public void startWorldCollisionEditor() {
 		this.currHandler = new WorldCollisionHandler(this);
+	}
+
+	public void resized(int width, int height) {
+		// TODO Auto-generated method stub
+		this.setPreferredSize(new Dimension(width, height));
+		LampPanel.PHEIGHT = height;
+		LampPanel.PWIDTH = width;
 	}
 
 }

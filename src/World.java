@@ -30,8 +30,8 @@ public class World {
 	}
 	
 	public void draw(Graphics g) {
-		g.drawImage(dispImage, (int) (512-((GameHandler) handler).player.getX()), (int) (288-((GameHandler) handler).player.getY()), null);
-		g.drawImage(lightmap, 0, 0, null);
+		g.drawImage(dispImage, (int) (512 - ((GameHandler) handler).player.getX()), (int) (288 - ((GameHandler) handler).player.getY()), null);
+		//g.drawImage(lightmap, 0, 0, null);
 		((Graphics2D) g).setStroke(new BasicStroke(3, 0, 0));
 		for (int i = 0; i < segments.size(); i++) {
 			//segments.get(i).draw(g);
