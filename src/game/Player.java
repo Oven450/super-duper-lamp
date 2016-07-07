@@ -1,8 +1,18 @@
+package game;
+import game.item.Bow;
+import game.item.Lamp;
+import game.item.Sword;
+import game.item.Weapon;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+
+import world_collision.MoveVector;
+import main_app.Handler;
+import main_app.LampPanel;
 
 
 public class Player {

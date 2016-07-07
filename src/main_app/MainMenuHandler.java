@@ -1,5 +1,8 @@
+package main_app;
 import java.awt.Graphics;
 import java.awt.Point;
+
+import menu.MainMenu;
 
 
 public class MainMenuHandler extends Handler {

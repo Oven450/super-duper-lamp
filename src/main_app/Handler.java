@@ -1,15 +1,19 @@
+package main_app;
 import java.awt.Graphics;
 import java.awt.Point;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import utility.BufferedImageLoader;
+import menu.MainMenu;
+
 public class Handler {
 
-	LampPanel panel;
+	protected LampPanel panel;
 
-	int mouseX, mouseY;
+	protected int mouseX;
+	protected int mouseY;
 	
 	boolean mouseMovedSinceLast = false;
 	

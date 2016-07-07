@@ -1,3 +1,4 @@
+package game;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -7,6 +8,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import main_app.Handler;
+import utility.ReadFile;
+import world_collision.MoveVector;
+import world_collision.WorldCollisionSegment;
 
 
 public class World {
