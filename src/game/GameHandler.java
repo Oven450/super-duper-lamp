@@ -1,11 +1,18 @@
+package game;
+import game.item.Item;
+
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 
+import main_app.Handler;
+import main_app.LampPanel;
+import menu.PauseMenu;
+
 
 public class GameHandler extends Handler {
 
-	Player player;
+	public Player player;
 	World world;
 	Item item;
 	boolean paused = false;

@@ -1,8 +1,10 @@
+package menu;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
-
 import java.awt.Cursor;
+
+import main_app.Handler;
 
 
 public abstract class Menu {

@@ -1,7 +1,16 @@
+package game.item;
+import game.GameHandler;
+import game.Player;
+import game.World;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
+import world_collision.MoveVector;
+import main_app.Handler;
+import main_app.LampPanel;
 
 
 public class Item {

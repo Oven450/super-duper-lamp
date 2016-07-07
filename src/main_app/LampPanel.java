@@ -1,3 +1,6 @@
+package main_app;
+import game.GameHandler;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -13,6 +16,8 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
+
+import world_collision.WorldCollisionHandler;
 
 public class LampPanel extends JPanel implements Runnable {
 

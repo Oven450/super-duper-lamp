@@ -1,3 +1,4 @@
+package world_collision;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -6,6 +7,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import utility.ReadFile;
+import main_app.Handler;
+import main_app.LampPanel;
 
 
 public class WorldCollisionWorld {

@@ -1,6 +1,11 @@
+package game.item;
+import game.Player;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import main_app.Handler;
 
 public class Weapon extends Item {
 	
@@ -8,7 +13,7 @@ public class Weapon extends Item {
 	public static ArrayList<Double> damages = new ArrayList<Double>();
 	public static ArrayList<String> names = new ArrayList<String>();
 	BufferedImage weaponSpritesheet; //filled with images of weapons
-	BufferedImage attackingSpritesheet; //Animations of different weapon type attacks (ie. long sword vs short sword etc.)
+	public BufferedImage attackingSpritesheet; //Animations of different weapon type attacks (ie. long sword vs short sword etc.)
 	/*attackingSpritesheet Layout
 	 * WeaponType #1
 	 * Left attacking images
@@ -25,7 +30,7 @@ public class Weapon extends Item {
 	//public String name = "Basic Sword";
 	
 	public int weaponType;
-	private final int SHORTWORD = 0;
+	private final int SHORTSWORD = 0;
 	private final int LONGSWORD = 1;
 	private final int KATANA = 2;//more can be added
 	

@@ -1,9 +1,15 @@
+package game;
+import game.item.Item;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+
+import main_app.Handler;
+import main_app.LampPanel;
 
 
 public class PlayerInventory {

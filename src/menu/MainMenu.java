@@ -1,7 +1,12 @@
+package menu;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+
+import main_app.Handler;
+import main_app.LampPanel;
+import main_app.MainMenuHandler;
 
 
 public class MainMenu extends Menu {

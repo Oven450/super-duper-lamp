@@ -1,5 +1,9 @@
+package menu;
 import java.awt.Color;
 import java.awt.Font;
+
+import world_collision.WorldCollisionHandler;
+import main_app.LampPanel;
 
 
 public class WorldCollisionMenu extends Menu {
