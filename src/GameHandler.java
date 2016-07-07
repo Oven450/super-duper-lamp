@@ -39,6 +39,11 @@ public class GameHandler extends Handler {
 		}
 	}
 	
+	@Override
+	public void mouseRotatedGO(int rotation) {
+		player.mouseRotated(rotation);
+	}
+	
 		
 	@Override
 	public void updateGO() {

@@ -22,7 +22,7 @@ public class Weapon extends Item {
 	 */
 	
 	public double damage = 100; //some starting damage (not even needed)
-	public String name = "Basic Sword";
+	//public String name = "Basic Sword";
 	
 	public int weaponType;
 	private final int SHORTWORD = 0;
@@ -37,10 +37,4 @@ public class Weapon extends Item {
 		//this.name = names.get(weapon);
 		this.weaponType = (weapon/10); //10 weapons of each type
 	}
-	
-	@Override
-	public void inventoryDraw(int x, int y, Graphics g, boolean curr) {
-		super.inventoryDraw(x, y, g, curr);
-	}
-	
 }

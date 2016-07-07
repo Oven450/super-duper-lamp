@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 
@@ -8,6 +9,8 @@ public class Item {
 	boolean inWorld;
 	
 	BufferedImage frame;
+	BufferedImage image;
+	String name;
 	Player player;
 	World world;
 	Handler handler;
@@ -64,12 +67,20 @@ public class Item {
 		
 	}
 	
-	public void inventoryDraw(int x, int y, Graphics g, boolean curr) {
+	public void equipDraw(int x, int y, Graphics g, boolean curr) {
 		if (curr) {
 			g.setColor(Color.YELLOW);
 			g.drawRect(x, y, 48, 48);
 		}
+		g.drawImage(this.image, x, y, null);
 		
+	}
+	
+	public void inventoryDraw(int x, int y, Graphics g) {
+		((Graphics2D) g).drawImage(this.image, x + 10, y + 6, x + 106, y + 98, 0, 0, 48, 48, null);
+		System.out.println(this.getClass() + " " + this.name);
+		g.setColor(Color.WHITE);
+		g.drawString(this.name, x + 116, y + 30);
 	}
 	
 }
