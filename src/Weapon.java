@@ -1,7 +1,8 @@
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Weapon {
+public class Weapon extends Item {
 	
 	Handler handler;
 	public static ArrayList<Double> damages = new ArrayList<Double>();
@@ -21,20 +22,19 @@ public class Weapon {
 	 */
 	
 	public double damage = 100; //some starting damage (not even needed)
-	public String name = "Basic Sword";
+	//public String name = "Basic Sword";
 	
 	public int weaponType;
 	private final int SHORTWORD = 0;
 	private final int LONGSWORD = 1;
 	private final int KATANA = 2;//more can be added
 	
-	public Weapon (Handler handler, int weapon){ //each weapon has a corresponding integer
-		this.handler = handler;
+	public Weapon (Player player, Handler handler, int weapon){ //each weapon has a corresponding integer
+		super(player, handler);
 		//this.weaponSpritesheet = handler.loadImage("/weapons.png"); I COMMENTED THESE OUT FOR TESTING PURPOSES
 		//this.attackingSpritesheet = handler.loadImage("/attacks.png");
 		//this.damage = damages.get(weapon);
 		//this.name = names.get(weapon);
 		this.weaponType = (weapon/10); //10 weapons of each type
 	}
-	
 }

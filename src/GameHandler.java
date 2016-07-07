@@ -7,6 +7,7 @@ public class GameHandler extends Handler {
 
 	Player player;
 	World world;
+	Item item;
 	boolean paused = false;
 	
 	PauseMenu pauseMenu;
@@ -17,6 +18,7 @@ public class GameHandler extends Handler {
 		
 		world = new World(this);
 		player = new Player(this);
+		item = new Item(400, 200, world, this);
 		pauseMenu = new PauseMenu(this);
 	}
 	
@@ -37,12 +39,18 @@ public class GameHandler extends Handler {
 		}
 	}
 	
+	@Override
+	public void mouseRotatedGO(int rotation) {
+		player.mouseRotated(rotation);
+	}
+	
 		
 	@Override
 	public void updateGO() {
 		if (!paused) {
 			world.update();
 			player.update();
+			item.update();
 		}
 		
 		if (this.keyDown(KeyEvent.VK_ESCAPE) && escapeable) {
@@ -61,6 +69,7 @@ public class GameHandler extends Handler {
 		if (!paused) {
 			world.draw(g);
 			player.draw(g);
+			item.draw(g);
 		} else {
 			world.draw(g);
 			pauseMenu.draw(g);

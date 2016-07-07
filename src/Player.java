@@ -34,12 +34,14 @@ public class Player {
 	private double yvel;
 	private double jumpYVel = -20;
 	private MoveVector drawMV;
+	private PlayerInventory inventory;
+	boolean canRotateEquipped = true;
 	
 	public Player (Handler handler) {
 		this.handler = handler;
 		this.spritesheet1 = handler.loadImage("/player.png");
 		this.spritesheet2 = handler.loadImage("/player2.png");
-		this.weapon = new Weapon(handler, 0);
+		this.weapon = new Weapon(this, handler, 0);
 		gameState = STANDING;
 		facing = RIGHT;
 		this.xvel = 0;
@@ -47,6 +49,10 @@ public class Player {
 		drawMV = new MoveVector(0, 0, 1, 1);
 		currImage = spritesheet1;
 		ticksTillNextFrame = 9;
+		inventory = new PlayerInventory(this, handler, 2, 3);
+		inventory.equip(0, new Lamp(this, handler));
+		inventory.equip(1, new Sword(this, handler, 0));
+		inventory.equip(2, new Bow(this, handler, 0));
 	}
 	
 	public void update() {
@@ -59,31 +65,43 @@ public class Player {
 			ticksTillNextFrame = 9;
 		} else {
 			ticksTillNextFrame--;
+		} if (handler.keyDown(KeyEvent.VK_T)) {
+			System.out.println("TAB");
+			inventory.openInventory();
 		}
-		if(handler.keyDown(KeyEvent.VK_SPACE) && gameState != ATTACKING){
-			attack();
+		if (!inventory.isOpen()) {
+			if (handler.keyDown(KeyEvent.VK_E) && canRotateEquipped) {
+				inventory.rotateEquipped();
+				canRotateEquipped = false;
+			} else if (!handler.keyDown(KeyEvent.VK_E)){
+				canRotateEquipped = true;
+			}
+			if(handler.keyDown(KeyEvent.VK_SPACE) && gameState != ATTACKING){
+				attack();
+			}
+			if (handler.keyDown(KeyEvent.VK_A)){
+				facing = LEFT;
+				xvel = -15;
+			} else if (handler.keyDown(KeyEvent.VK_D)){
+				facing = RIGHT;
+				xvel = 15;
+			} else {
+				xvel = 0;
+			}
+			if(yvel == 0 && gameState != JUMPING){
+				gameState = WALKING;
+			}
+			if(handler.keyDown(KeyEvent.VK_W)&& gameState != JUMPING){
+				yvel = jumpYVel;
+				gameState = JUMPING;
+				
+			}
 		}
-		if (handler.keyDown(KeyEvent.VK_A)){
-			facing = LEFT;
-			xvel = -15;
-		} else if (handler.keyDown(KeyEvent.VK_D)){
-			facing = RIGHT;
-			xvel = 15;
-		} else {
-			xvel = 0;
-		}
-		if(yvel == 0 && gameState != JUMPING){
-			gameState = WALKING;
-		}
-		if(handler.keyDown(KeyEvent.VK_W)&& gameState != JUMPING){
-			yvel = jumpYVel;
-			gameState = JUMPING;
-			
-		}
+		
 		//if(gameState == JUMPING){
 			yvel += 1.3;
 		//}
-		MoveVector mv = new MoveVector (this.x + 10, this.y + 40, this.x + 10 + xvel, this.y + 40 + yvel);
+		MoveVector mv = new MoveVector (this.x + 16, this.y + 27, this.x + 16 + xvel, this.y + 27 + yvel);
 		MoveVector rmv = ((GameHandler) handler).getWorld().testCollision(mv);
 		if (rmv == null) {
 			drawMV = mv;
@@ -108,13 +126,14 @@ public class Player {
 	public void draw(Graphics g) {
 		g.setColor(new Color(0, 255, 255, 50));
 		if (facing == RIGHT) {
-			((Graphics2D) g).drawImage(currImage, (int) 512 - 16, (int) 288 - 27, (int) 512 + 16, (int) 288 + 27, 0, 0, 14, 27, null);
+			((Graphics2D) g).drawImage(currImage, (int) LampPanel.PWIDTH / 2 - 16, (int) LampPanel.PHEIGHT / 2 - 27, (int) LampPanel.PWIDTH / 2 + 16, (int) LampPanel.PHEIGHT / 2 + 27, 0, 0, 14, 27, null);
 		} else {
-			((Graphics2D) g).drawImage(currImage, (int) 512 - 16, (int) 288 - 27, (int) 512 + 16, (int) 288 + 27, 14, 0, 0, 27, null);
+			((Graphics2D) g).drawImage(currImage, (int) LampPanel.PWIDTH / 2 - 16, (int) LampPanel.PHEIGHT / 2 - 27, (int) LampPanel.PWIDTH / 2 + 16, (int) LampPanel.PHEIGHT / 2 + 27, 14, 0, 0, 27, null);
 		}
 		//g.fillRect((int)x, (int)y, 20, 40);
 		//this.drawMV.draw(g);
 		//(new MoveVector (this.x + 10, this.y + 40, this.x + 10.0001 + xvel, this.y + 40 + yvel)).draw(g);
+		inventory.draw(g);
 	}
 	public void attack(){
 		BufferedImage attackImages;
@@ -135,6 +154,11 @@ public class Player {
 
 	public double getY() {
 		return y;
+	}
+
+	public void mouseRotated(int rotation) {
+		inventory.mouseRotated(rotation);
+		
 	}
 
 }
