@@ -17,6 +17,8 @@ import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
 
+import server.LampClientHandler;
+import server.LampServerHandler;
 import world_collision.WorldCollisionHandler;
 
 public class LampPanel extends JPanel implements Runnable {
@@ -287,6 +289,14 @@ public class LampPanel extends JPanel implements Runnable {
 		this.setPreferredSize(new Dimension(width, height));
 		LampPanel.PHEIGHT = height;
 		LampPanel.PWIDTH = width;
+	}
+
+	public void startClient() {
+		this.currHandler = new LampClientHandler(this);
+	}
+	
+	public void startServer() {
+		this.currHandler = new LampServerHandler(this);
 	}
 
 }

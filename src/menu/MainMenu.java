@@ -18,7 +18,9 @@ public class MainMenu extends Menu {
 		
 		this.buttons.add(new Button(0, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 - 50, 300, 60, new Color(15, 150, 50, 30), "Start Game", this));
 		this.buttons.add(new Button(1, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 + 25, 300, 60, new Color(15, 150, 50, 30), "Edit World Collisions", this));
-		this.buttons.add(new Button(2, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 + 100, 300, 60, new Color(15, 150, 50, 30), "Quit", this));
+		this.buttons.add(new Button(3, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 + 100, 142, 60, new Color(15, 150, 50, 30), "Client", this));
+		this.buttons.add(new Button(4, LampPanel.PWIDTH / 2 + 8, LampPanel.PHEIGHT / 2 + 100, 142, 60, new Color(15, 150, 50, 30), "Server", this));
+		this.buttons.add(new Button(2, LampPanel.PWIDTH / 2 - 150, LampPanel.PHEIGHT / 2 + 175, 300, 60, new Color(15, 150, 50, 30), "Quit", this));
 	}
 
 	@Override
@@ -32,6 +34,12 @@ public class MainMenu extends Menu {
 			break;
 		case 2:
 			handler.getPanel().stopGame();
+			break;
+		case 3:
+			((MainMenuHandler) handler).startClient();
+			break;
+		case 4:
+			((MainMenuHandler) handler).startServer();
 			break;
 		default:
 			System.out.println("Invalid Button ID");

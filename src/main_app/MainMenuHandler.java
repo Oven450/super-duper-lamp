@@ -39,5 +39,13 @@ public class MainMenuHandler extends Handler {
 		this.panel.startWorldCollisionEditor();
 		
 	}
+
+	public void startClient() {
+		this.panel.startClient();
+	}
+	
+	public void startServer() {
+		this.panel.startServer();
+	}
 	
 }
