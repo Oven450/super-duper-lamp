@@ -8,31 +8,39 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import main_app.Handler;
+
 public class LampServer extends Thread {
 
-	public static final int PORT = 12234;
+	public static final int PORT = 56276;
 	BufferedReader in;
 	PrintStream out;
 	Socket clientSock;
 	int frames = 0;
 	ArrayList<String> disp;
+	boolean connectionOpen;
+	Handler handler;
+	int currClientID = 0;
 
-	public LampServer() {
+	public LampServer(Handler handler) {
+		this.handler = handler;
 		this.start();
 	}
 	
 	@Override
 	public void run() {
-	
+		while (true) {
 			try {
 				ServerSocket serverSock = new ServerSocket(PORT);
 				
 
 				System.out.println("Waiting for client...");
 				clientSock = serverSock.accept();
+				clientSock.setTcpNoDelay(true);
 
 				in = new BufferedReader(new InputStreamReader(
 						clientSock.getInputStream()));
@@ -43,11 +51,14 @@ public class LampServer extends Thread {
 				
 				disp = new ArrayList<String>();
 				disp.add("Connection initialized with: " + clientSock.getInetAddress().toString());
+				new ServerThread(handler, this, clientSock, currClientID);
+				currClientID++;
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
 	}
 
 	public void update() {
@@ -55,8 +66,9 @@ public class LampServer extends Thread {
 			if (frames > 30) {
 				frames = 0;
 				Date d = new Date();
-				out.println(d.getTime());
-				disp.add(d.toString());
+				DecimalFormat df = new DecimalFormat("00000000000000000000");
+				//out.println(df.format(d.getTime()) + "hello");
+				//disp.add(d.toString());
 			} else {
 				frames++;
 			}
@@ -79,6 +91,18 @@ public class LampServer extends Thread {
 			g.setColor(Color.WHITE);
 			g.drawString("Waiting for client...", 20, 40);
 		}
+	}
+	
+	private void sendMessage(String message) {
+		Date d = new Date();
+		Long l = System.nanoTime();
+		DecimalFormat df = new DecimalFormat("00000000000000000000");
+		out.println(df.format(l) + message);
+		out.flush();
+	}
+	
+	private void pingBack(String sendTime) {
+		sendMessage("ping " + sendTime);
 	}
 
 }

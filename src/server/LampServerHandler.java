@@ -11,7 +11,7 @@ public class LampServerHandler extends Handler {
 	
 	public LampServerHandler(LampPanel panel) {
 		super(panel);
-		server = new LampServer();
+		server = new LampServer(this);
 	}
 	
 	@Override
