@@ -42,6 +42,8 @@ public class ServerThread extends Thread {
 				} else if (s.substring(20).substring(0, s.indexOf(" ") - 20).equals("close")) {
 					connectionOpen = false;
 					sock.close();
+				} else if (s.substring(20).substring(0, s.indexOf(" ") - 20).equals("broadcast")) {
+					server.broadcast(s.substring(s.indexOf(" ")), clientID);
 				}
 			}
 			
@@ -51,7 +53,7 @@ public class ServerThread extends Thread {
 		
 	}
 	
-	private void sendMessage(String message) {
+	public void sendMessage(String message) {
 		Date d = new Date();
 		Long l = System.nanoTime();
 		DecimalFormat df = new DecimalFormat("00000000000000000000");
@@ -59,7 +61,7 @@ public class ServerThread extends Thread {
 		out.flush();
 	}
 	
-	private void pingBack(String sendTime) {
+	public void pingBack(String sendTime) {
 		sendMessage("ping " + sendTime);
 	}
 	

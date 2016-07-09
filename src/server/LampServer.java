@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import main_app.Handler;
 
@@ -25,9 +26,11 @@ public class LampServer extends Thread {
 	boolean connectionOpen;
 	Handler handler;
 	int currClientID = 0;
+	HashMap<Integer, ServerThread> clients;
 
 	public LampServer(Handler handler) {
 		this.handler = handler;
+		this.clients = new HashMap<Integer, ServerThread>();
 		this.start();
 	}
 	
@@ -51,7 +54,7 @@ public class LampServer extends Thread {
 				
 				disp = new ArrayList<String>();
 				disp.add("Connection initialized with: " + clientSock.getInetAddress().toString());
-				new ServerThread(handler, this, clientSock, currClientID);
+				clients.put(currClientID, new ServerThread(handler, this, clientSock, currClientID));
 				currClientID++;
 
 			} catch (Exception e) {
@@ -93,16 +96,12 @@ public class LampServer extends Thread {
 		}
 	}
 	
-	private void sendMessage(String message) {
-		Date d = new Date();
-		Long l = System.nanoTime();
-		DecimalFormat df = new DecimalFormat("00000000000000000000");
-		out.println(df.format(l) + message);
-		out.flush();
-	}
-	
-	private void pingBack(String sendTime) {
-		sendMessage("ping " + sendTime);
+	public void broadcast(String s, int id) {
+		for (int i : clients.keySet()) {
+			if (i != id) {
+				clients.get(i).sendMessage("broadcast " + id + " " + s);
+			}
+		}
 	}
 
 }

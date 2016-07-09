@@ -47,5 +47,9 @@ public class MainMenuHandler extends Handler {
 	public void startServer() {
 		this.panel.startServer();
 	}
+
+	public void startMultiplayerGame() {
+		this.panel.startMultiplayerGame();
+	}
 	
 }

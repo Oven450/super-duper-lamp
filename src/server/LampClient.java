@@ -58,7 +58,8 @@ public class LampClient extends Thread {
 					disp.add(d + ": Ping response: " + (System.nanoTime() - Long.parseLong(s.substring(s.indexOf(" ") + 1))) / 1000000 + "ms");
 				} else {
 					Date d = new Date();
-					disp.add(d + ": " + s.substring(20) + " -- " + ((d.getTime() - Long.parseLong(s.substring(0, 20))) / 1000000) + "ms");
+					disp.add(d + ": " + s.substring(20) + " -- " + ((System.nanoTime() - Long.parseLong(s.substring(0, 20))) / 1000000) + "ms");
+					messageReceived(s);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -72,6 +73,10 @@ public class LampClient extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void messageReceived(String s) {
+		
 	}
 
 	public void draw(Graphics g) {
@@ -111,6 +116,10 @@ public class LampClient extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void broadcast(String s) {
+		sendMessage("broadcast " + s);
 	}
 	
 }

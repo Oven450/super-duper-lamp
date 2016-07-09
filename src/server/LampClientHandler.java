@@ -42,5 +42,10 @@ public class LampClientHandler extends Handler {
 		client.close();
 		this.panel.stopGame();
 	}
+
+	public void broadcast(String s) {
+		client.broadcast(s);
+		
+	}
 	
 }

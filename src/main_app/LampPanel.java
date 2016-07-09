@@ -17,6 +17,7 @@ import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
 
+import multiplayer.MultiplayerGameHandler;
 import server.LampClientHandler;
 import server.LampServerHandler;
 import world_collision.WorldCollisionHandler;
@@ -297,6 +298,10 @@ public class LampPanel extends JPanel implements Runnable {
 	
 	public void startServer() {
 		this.currHandler = new LampServerHandler(this);
+	}
+
+	public void startMultiplayerGame() {
+		this.currHandler = new MultiplayerGameHandler(this);
 	}
 
 }
