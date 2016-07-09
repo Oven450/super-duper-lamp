@@ -43,7 +43,7 @@ public class ServerThread extends Thread {
 					connectionOpen = false;
 					sock.close();
 				} else if (s.substring(20).substring(0, s.indexOf(" ") - 20).equals("broadcast")) {
-					server.broadcast(s.substring(s.indexOf(" ")), clientID);
+					server.broadcast(s.substring(s.indexOf(" ") + 1), clientID);
 				}
 			}
 			

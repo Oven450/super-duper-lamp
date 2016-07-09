@@ -46,7 +46,6 @@ public class LampClient extends Thread {
 	public void run() {
 		
 		while(connectionOpen) {
-			System.out.println("Running");
 			try {
 				String s = in.readLine();
 				if (s != null && s.equals("close")) {

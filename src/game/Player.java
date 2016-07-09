@@ -178,7 +178,8 @@ public class Player {
 		s += df.format(x) + " ";
 		s += df.format(y) + " ";
 		s += df.format(xvel) + " ";
-		s += df.format(yvel) + ";";
+		s += df.format(yvel) + " ";
+		s += facing;
 		return s;
 	}
 
