@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import main_app.Handler;
 import utility.ReadFile;
@@ -66,6 +67,9 @@ public class World {
 	}
 	
 	public MoveVector testCollision(MoveVector mv) {
+		Point2D currentBest = null;
+		WorldCollisionSegment bestSeg = null;
+		double progress = 1;
 		for (WorldCollisionSegment seg : segments) {
 			Rectangle2D segRect = seg.getBoundingBox();
 			Rectangle2D mvRect = mv.getBoundingBox();
@@ -75,25 +79,18 @@ public class World {
 				if (p1 == null) {
 					continue;
 				}
-				Point2D p = seg.getPoint01FromPoint(p1.getX(), p1.getY(), mv.x1, mv.y1);
-				double x = p.getX();
-				double y = p.getY();
-				
-				try {
-					//System.out.println("Sleeping : (" + x + ", " + y + ")");
-					//handler.panel.animator.sleep(500);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				double thisProgress = mv.getProgress(p1);
+				if (thisProgress < progress) {
+					currentBest = p1;
+					progress = thisProgress;
+					bestSeg = seg;
 				}
-				return new MoveVector(mv.x1, mv.y1, x, y);
-				
-			//}
-			//if ((new Line2D.Double(seg.getX1(), seg.getY1(), seg.getX2(), seg.getY2())).ptLineDist(new Point2D.Double(mv.x1, mv.y1)) < .00000001) {
-			//	return new MoveVector(mv.x1, mv.y1, mv.x1, mv.y1);
-			//}
 		}
-		return null;
+		if (currentBest == null) {
+			return null;
+		}
+		Point2D p = bestSeg.getPoint01FromPoint(currentBest.getX(), currentBest.getY(), mv.x1, mv.y1);
+		return new MoveVector(mv.x1, mv.y1,p.getX(), p.getY());
 	}
 	
 	

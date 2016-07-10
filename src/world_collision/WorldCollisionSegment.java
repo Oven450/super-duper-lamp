@@ -30,8 +30,11 @@ public class WorldCollisionSegment {
 	}
 	
 	public void draw(Graphics g) {
+		DecimalFormat df = new DecimalFormat("0.0");
 		g.setColor(Color.MAGENTA);
 		g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+		g.setColor(Color.WHITE);
+		g.drawString("" + df.format(this.getAngle()),(int) (x1 + x2) / 2,(int) (y1 + y2) / 2);
 	}
 	
 	public double getX1() {
@@ -81,7 +84,7 @@ public class WorldCollisionSegment {
 	}
 	
 	public Point2D getPoint01FromPoint(double x, double y, double fromX, double fromY) {
-		double c = Math.sqrt(.1 / (Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2)));
+		double c = Math.sqrt(.01 / (Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2)));
 		double a = -c * (y2 - y1);
 		double b = c * (x2 - x1);
 		double yOnLine = y1 + ((fromX - x1) / (x2 - x1)) * (y2 - y1);
@@ -123,4 +126,10 @@ public class WorldCollisionSegment {
 		return (new Point2D.Double(newX, newY));
 	}
 	
+	public double getAngle() {
+		if (x2 - x1 == 0) {
+			return 90;
+		}
+		return Math.toDegrees(Math.atan((y2 - y1) / (x2 - x1)));
+	}
 }

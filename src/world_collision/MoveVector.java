@@ -61,4 +61,14 @@ public class MoveVector {
 		b *= (y1 - y2) / Math.abs(y1 - y2);
 		return new Point2D.Double(x + a, y + b);
 	}
+
+	public double getProgress(Point2D p) {
+		if (x2 - x1 == 0 && y2 - y1 == 0) {
+			return 1;
+		} else if (x2 - x1 == 0) {
+			return (p.getY() - y1) / (y2 - y1);
+		}
+		return (p.getX() - x1) / (x2 - x1);
+		
+	}
 }

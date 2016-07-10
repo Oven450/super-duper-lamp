@@ -13,6 +13,7 @@ import java.text.DecimalFormat;
 
 import main_app.Handler;
 import main_app.LampPanel;
+import world_collision.CollisionManager;
 import world_collision.MoveVector;
 
 
@@ -47,6 +48,7 @@ public class Player {
 	private MoveVector drawMV;
 	private PlayerInventory inventory;
 	boolean canRotateEquipped = true;
+	CollisionManager colManager;
 	
 	public Player (Handler handler) {
 		this.handler = handler;
@@ -64,6 +66,7 @@ public class Player {
 		inventory.equip(0, new Lamp(this, handler));
 		inventory.equip(1, new Sword(this, handler, 0));
 		inventory.equip(2, new Bow(this, handler, 0));
+		this.colManager = new CollisionManager((GameHandler) handler);
 	}
 	
 	public void update() {
@@ -112,10 +115,8 @@ public class Player {
 		//if(gameState == JUMPING){
 			yvel += 1.3;
 		//}
-		MoveVector mv = new MoveVector (this.x + 16, this.y + 27, this.x + 16 + xvel, this.y + 27 + yvel);
-		MoveVector rmv = ((GameHandler) handler).getWorld().testCollision(mv);
+		MoveVector rmv = colManager.testCollision(x, y, xvel, yvel);
 		if (rmv == null) {
-			drawMV = mv;
 			y += yvel;
 			x += xvel;
 		} else {
