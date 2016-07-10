@@ -9,10 +9,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 
-import world_collision.MoveVector;
 import main_app.Handler;
 import main_app.LampPanel;
+import world_collision.MoveVector;
 
 
 public class Player {
@@ -169,6 +170,17 @@ public class Player {
 	public void mouseRotated(int rotation) {
 		inventory.mouseRotated(rotation);
 		
+	}
+	
+	public String getBroadcastString() {
+		String s = "player ";
+		DecimalFormat df = new DecimalFormat("#.###");
+		s += df.format(x) + " ";
+		s += df.format(y) + " ";
+		s += df.format(xvel) + " ";
+		s += df.format(yvel) + " ";
+		s += facing;
+		return s;
 	}
 
 }
