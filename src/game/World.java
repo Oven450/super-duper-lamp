@@ -2,16 +2,15 @@ package game;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import main_app.Handler;
 import utility.ReadFile;
+import world_collision.Collision;
 import world_collision.MoveVector;
 import world_collision.WorldCollisionSegment;
 
@@ -66,7 +65,7 @@ public class World {
 		segments.add(new WorldCollisionSegment(x1, y1, x2, y2, (Handler) handler));
 	}
 	
-	public MoveVector testCollision(MoveVector mv) {
+	public Collision testCollision(MoveVector mv) {
 		Point2D currentBest = null;
 		WorldCollisionSegment bestSeg = null;
 		double progress = 1;
@@ -90,7 +89,7 @@ public class World {
 			return null;
 		}
 		Point2D p = bestSeg.getPoint01FromPoint(currentBest.getX(), currentBest.getY(), mv.x1, mv.y1);
-		return new MoveVector(mv.x1, mv.y1,p.getX(), p.getY());
+		return new Collision(p.getX(), p.getY(), bestSeg, progress);
 	}
 	
 	

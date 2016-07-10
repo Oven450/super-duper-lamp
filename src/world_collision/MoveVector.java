@@ -18,6 +18,7 @@ public class MoveVector {
 		this.y1 = y1;
 		this.y2 = y2;
 		this.x2 = x2;
+		//System.out.println((x2 - x1) + " " + (y2 - y1) + " : " + this.getAngle() + " " + this.getMagnitude());
 	}
 	
 	public Rectangle2D.Double getBoundingBox() {
@@ -70,5 +71,23 @@ public class MoveVector {
 		}
 		return (p.getX() - x1) / (x2 - x1);
 		
+	}
+
+	public double getAngle() {
+		if (x2 - x1 == 0) {
+			if (y2 > y1) {
+				return 90;
+			}
+			return -90;
+		}
+		double angle = Math.toDegrees(Math.atan((y2 - y1) / (x2 - x1)));
+		if (x2 < x1) {
+			angle += 180;
+		}
+		return angle;
+	}
+
+	public double getMagnitude() {
+		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 	}
 }

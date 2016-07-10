@@ -57,7 +57,8 @@ public class Item {
 		if (inWorld) {
 			yvel += 1.3;
 			MoveVector mv = new MoveVector (this.x + 12, this.y + 24, this.x + 12, this.y + 24 + yvel);
-			MoveVector rmv = world.testCollision(mv);
+			/*MoveVector col = world.testCollision(mv);
+			
 			if (rmv == null) {
 				y += yvel;
 			} else {
@@ -66,7 +67,7 @@ public class Item {
 				}
 				x += rmv.x2 - rmv.x1;
 				y += rmv.y2 - rmv.y1;
-			}
+			}*/
 		}
 	}
 	

@@ -2,12 +2,13 @@ package world_collision;
 
 public class Collision {
 	
-	double x, y, angle, progress;
+	double x, y, progress;
+	WorldCollisionSegment seg;
 	
-	public Collision(double x, double y, double angle, double progress) {
+	public Collision(double x, double y, WorldCollisionSegment seg, double progress) {
 		this.x = x;
 		this.y = y;
-		this.angle = angle;
+		this.seg = seg;
 		this.progress = progress;
 	}
 	

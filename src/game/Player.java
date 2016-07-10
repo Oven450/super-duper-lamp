@@ -95,10 +95,10 @@ public class Player {
 			}
 			if (handler.keyDown(KeyEvent.VK_A)){
 				facing = LEFT;
-				xvel = -15;
+				xvel = -8;
 			} else if (handler.keyDown(KeyEvent.VK_D)){
 				facing = RIGHT;
-				xvel = 15;
+				xvel = 8;
 			} else {
 				xvel = 0;
 			}
@@ -115,7 +115,7 @@ public class Player {
 		//if(gameState == JUMPING){
 			yvel += 1.3;
 		//}
-		MoveVector rmv = colManager.testCollision(x, y, xvel, yvel);
+		MoveVector rmv = colManager.testCollision(x, y + 27, xvel, yvel);
 		if (rmv == null) {
 			y += yvel;
 			x += xvel;
@@ -124,7 +124,7 @@ public class Player {
 				if (yvel > 0) {
 					gameState = STANDING;
 				}
-				yvel = 0;
+				yvel = rmv.y2 - rmv.y1;
 			}
 			if (rmv.x2 - rmv.x1 != xvel) {
 				xvel = 0;

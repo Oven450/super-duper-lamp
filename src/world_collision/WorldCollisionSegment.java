@@ -128,7 +128,7 @@ public class WorldCollisionSegment {
 	
 	public double getAngle() {
 		if (x2 - x1 == 0) {
-			return 90;
+			return -90;
 		}
 		return Math.toDegrees(Math.atan((y2 - y1) / (x2 - x1)));
 	}
