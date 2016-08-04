@@ -7,6 +7,7 @@ import game.item.Weapon;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
@@ -67,6 +68,8 @@ public class Player {
 		inventory.equip(1, new Sword(this, handler, 0));
 		inventory.equip(2, new Bow(this, handler, 0));
 		this.colManager = new CollisionManager((GameHandler) handler);
+		colManager.addOffsetPoint(new Point(0, 27));
+		colManager.addOffsetPoint(new Point(0, -27));
 	}
 	
 	public void update() {
@@ -115,7 +118,7 @@ public class Player {
 		//if(gameState == JUMPING){
 			yvel += 1.3;
 		//}
-		MoveVector rmv = colManager.testCollision(x, y + 27, xvel, yvel);
+		MoveVector rmv = colManager.testCollision(x, y, xvel, yvel);
 		if (rmv == null) {
 			y += yvel;
 			x += xvel;
