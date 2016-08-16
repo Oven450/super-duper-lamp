@@ -44,7 +44,7 @@ public class WorldCollisionHandler extends Handler {
 	public void draw(Graphics g) {
 		
 		if (secondClick) {
-			WorldCollisionSegment temp = new WorldCollisionSegment(firstClickX, firstClickY, (world.dispImage.getWidth() / 2 + -(centerX - mouseX) * scale), (world.dispImage.getHeight() / 2 + -(centerY - mouseY) * scale), (Handler) this);
+			WorldCollisionSegment temp = new WorldCollisionSegment(firstClickX, firstClickY, (world.dispImage.getWidth() / 2 + -(centerX - mouseX) * scale), (world.dispImage.getHeight() / 2 + -(centerY - mouseY) * scale), true, true, (Handler) this);
 			world.segments.add(temp);
 			g.setColor(Color.MAGENTA);
 			((Graphics2D) g).setStroke(new BasicStroke(3,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_ROUND));
@@ -79,7 +79,7 @@ public class WorldCollisionHandler extends Handler {
 				secondClick = false;
 				double x = (world.dispImage.getWidth() / 2 + -(centerX - p.getX()) * scale);
 				double y = (world.dispImage.getHeight() / 2 + -(centerY - p.getY()) * scale);
-				world.addSegment(firstClickX, firstClickY, x, y);
+				world.addSegment(firstClickX, firstClickY, x, y, true, true);
 				secondClick = true;
 				firstClickX = x;
 				firstClickY = y;
