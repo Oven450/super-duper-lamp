@@ -192,6 +192,7 @@ public class LampPanel extends JPanel implements Runnable {
 			gameUpdate();
 			gameRender();
 			paintScreen();
+			requestFocus();
 			
 			if (System.nanoTime() - lastRead > 1000000000) {
 				lastRead = System.nanoTime();

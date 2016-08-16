@@ -100,7 +100,6 @@ public class LampClient extends Thread {
 	}
 	
 	private void sendMessage(String message) {
-		Date d = new Date();
 		Long l = System.nanoTime();
 		DecimalFormat df = new DecimalFormat("00000000000000000000");
 		out.println(df.format(l) + message);
