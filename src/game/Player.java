@@ -24,6 +24,8 @@ public class Player {
 	BufferedImage spritesheet1;
 	BufferedImage spritesheet2;
 	BufferedImage currImage;
+	
+	private int ticksTillNextFrame;
 	Weapon weapon;
 	
 	// Current game states for the player
@@ -34,7 +36,7 @@ public class Player {
 	public static final int JUMPING = 2;
 	public static final int ATTACKING =3;
 	// The current direction the player is facing
-	private int ticksTillNextFrame;
+	
 	
 	private int facing;
 	public static final int LEFT = 0;
@@ -46,7 +48,6 @@ public class Player {
 	private double xvel;
 	private double yvel;
 	private double jumpYVel = -20;
-	private MoveVector drawMV;
 	private PlayerInventory inventory;
 	boolean canRotateEquipped = true;
 	CollisionManager colManager;
@@ -60,7 +61,6 @@ public class Player {
 		facing = RIGHT;
 		this.xvel = 0;
 		this.yvel = 0;
-		drawMV = new MoveVector(0, 0, 1, 1);
 		currImage = spritesheet1;
 		ticksTillNextFrame = 9;
 		inventory = new PlayerInventory(this, handler, 2, 3);
@@ -68,11 +68,17 @@ public class Player {
 		inventory.equip(1, new Sword(this, handler, 0));
 		inventory.equip(2, new Bow(this, handler, 0));
 		this.colManager = new CollisionManager((GameHandler) handler);
+		
 		colManager.addOffsetPoint(new Point(0, 27));
 		colManager.addOffsetPoint(new Point(0, -27));
+		colManager.addOffsetPoint(new Point(16, 0));
+		colManager.addOffsetPoint(new Point(-16, 0));
+		
 	}
 	
 	public void update() {
+		System.out.println(x  + " " + y);
+		// Switch to next frame or decrement ticksTillNextFrame
 		if (ticksTillNextFrame == 0) {
 			if (currImage.equals(spritesheet1)) {
 				currImage = spritesheet2;
@@ -82,20 +88,28 @@ public class Player {
 			ticksTillNextFrame = 9;
 		} else {
 			ticksTillNextFrame--;
+		
+		// Open inventory if T key is down
 		} if (handler.keyDown(KeyEvent.VK_T)) {
 			System.out.println("TAB");
 			inventory.openInventory();
 		}
 		if (!inventory.isOpen()) {
+			
+			// Rotate the equipped item if the E key is down 
+			// and has been up since the last time it was rotated
 			if (handler.keyDown(KeyEvent.VK_E) && canRotateEquipped) {
 				inventory.rotateEquipped();
 				canRotateEquipped = false;
-			} else if (!handler.keyDown(KeyEvent.VK_E)){
+			} else if (!handler.keyDown(KeyEvent.VK_E) && !canRotateEquipped){
 				canRotateEquipped = true;
 			}
+			
 			if(handler.keyDown(KeyEvent.VK_SPACE) && gameState != ATTACKING){
 				attack();
 			}
+			
+			// Move left and right
 			if (handler.keyDown(KeyEvent.VK_A)){
 				facing = LEFT;
 				xvel = -8;
@@ -105,7 +119,7 @@ public class Player {
 			} else {
 				xvel = 0;
 			}
-			if(yvel == 0 && gameState != JUMPING){
+			if(yvel == 0 && gameState != JUMPING) {
 				gameState = WALKING;
 			}
 			if(handler.keyDown(KeyEvent.VK_W)&& gameState != JUMPING){
@@ -113,16 +127,20 @@ public class Player {
 				gameState = JUMPING;
 				
 			}
-		}
+			}
 		
-		//if(gameState == JUMPING){
-			yvel += 1.3;
-		//}
+		// Constantly apply the force of gravity
+		yvel += 1.3;
+		
+		// Test for collisions and get rmv, the resulting MoveVector
+		// rmv = null if there is no collision
 		MoveVector rmv = colManager.testCollision(x, y, xvel, yvel);
 		if (rmv == null) {
 			y += yvel;
 			x += xvel;
 		} else {
+			// Set xvel and yvel to 0 if there has been a collision
+			
 			if (rmv.y2 - rmv.y1 != yvel) {
 				if (yvel > 0) {
 					gameState = STANDING;
@@ -132,7 +150,6 @@ public class Player {
 			if (rmv.x2 - rmv.x1 != xvel) {
 				xvel = 0;
 			}
-			drawMV = rmv;
 			x += rmv.x2 - rmv.x1;
 			y += rmv.y2 - rmv.y1;
 		}
@@ -140,6 +157,9 @@ public class Player {
 	
 	public void draw(Graphics g) {
 		g.setColor(new Color(0, 255, 255, 50));
+		
+		// Draw the image transformed to the middle of the screen and facing the correct direction
+		
 		if (facing == RIGHT) {
 			((Graphics2D) g).drawImage(currImage, (int) LampPanel.PWIDTH / 2 - 16, (int) LampPanel.PHEIGHT / 2 - 27, (int) LampPanel.PWIDTH / 2 + 16, (int) LampPanel.PHEIGHT / 2 + 27, 0, 0, 14, 27, null);
 		} else {
@@ -150,6 +170,7 @@ public class Player {
 		//(new MoveVector (this.x + 10, this.y + 40, this.x + 10.0001 + xvel, this.y + 40 + yvel)).draw(g);
 		inventory.draw(g);
 	}
+	
 	public void attack(){
 		BufferedImage attackImages;
 		if(gameState != JUMPING){
@@ -177,6 +198,9 @@ public class Player {
 	}
 	
 	public String getBroadcastString() {
+		// Returns a string in the format "player [x] [y] [xvel] [yvel] [facing]"
+		// All numbers rounded to 3 decimals
+		
 		String s = "player ";
 		DecimalFormat df = new DecimalFormat("#.###");
 		s += df.format(x) + " ";

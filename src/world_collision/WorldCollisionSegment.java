@@ -10,7 +10,7 @@ import main_app.Handler;
 
 public class WorldCollisionSegment {
 	
-	private double x1, y1, x2, y2;
+	private double x1, y1, x2, y2, c;
 	
 
 	private boolean above;
@@ -18,23 +18,26 @@ public class WorldCollisionSegment {
 	
 	private Handler handler;
 	
-	public WorldCollisionSegment(double startX, double startY, double endX, double endY, Handler handler) {
+	public WorldCollisionSegment(double startX, double startY, double endX, double endY, boolean above, boolean below, Handler handler) {
 		//System.out.println("New segment created: (" + startX + ", " + startY + ") --> (" + endX + ", " + endY + ")");
 		this.x1 = startX;
 		this.y1 = startY;
 		this.x2 = endX;
 		this.y2 = endY;
-		above = true;
-		below = true;
+		this.c = Math.sqrt(.01 / (Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2)));
+		this.above = above;
+		this.below = below;
 		this.handler = handler;
 	}
 	
 	public void draw(Graphics g) {
 		DecimalFormat df = new DecimalFormat("0.0");
-		g.setColor(Color.MAGENTA);
+		if (above && below) {
+			g.setColor(Color.MAGENTA);
+		}
 		g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
 		g.setColor(Color.WHITE);
-		g.drawString("" + df.format(this.getAngle()),(int) (x1 + x2) / 2,(int) (y1 + y2) / 2);
+		//g.drawString("" + df.format(this.getAngle()),(int) (x1 + x2) / 2,(int) (y1 + y2) / 2);
 	}
 	
 	public double getX1() {
@@ -53,10 +56,20 @@ public class WorldCollisionSegment {
 		return y2;
 	}
 	
+	
+	
+	public boolean isAbove() {
+		return above;
+	}
+
+	public boolean isBelow() {
+		return below;
+	}
+
 	@Override
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("0.000");
-		return df.format(x1) + " " + df.format(y1) + " " + df.format(x2) + " " + df.format(y2);
+		return df.format(x1) + " " + df.format(y1) + " " + df.format(x2) + " " + df.format(y2) + " " + above + " " + below;
 	}
 	
 	public Rectangle2D.Double getBoundingBox() {
@@ -84,19 +97,12 @@ public class WorldCollisionSegment {
 	}
 	
 	public Point2D getPoint01FromPoint(double x, double y, double fromX, double fromY) {
-		double c = Math.sqrt(.01 / (Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2)));
 		double a = -c * (y2 - y1);
 		double b = c * (x2 - x1);
-		double yOnLine = y1 + ((fromX - x1) / (x2 - x1)) * (y2 - y1);
-		double coef  = -1;
-		if (yOnLine > fromY) {
-			coef = -b / Math.abs(b);
-		} else {
-			coef = b / Math.abs(b);
+		if (a * (fromX - x) + b * (fromY - y) > 0) {
+			return new Point2D.Double(x + a, y + b);
 		}
-		a *= coef;
-		b *= coef;
-		return new Point2D.Double(x + a, y + b);
+		return new Point2D.Double(x - a, y - b);
 	}
 	
 	public Point2D getCollisionPoint(MoveVector mv) {

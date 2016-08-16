@@ -8,6 +8,8 @@ import java.util.ArrayList;
 public class CollisionManager {
 	
 	GameHandler handler;
+	
+	// The offsets from the object's center coordinates for each collision point
 	ArrayList<Point> offsets = new ArrayList<Point>();
 	
 	public CollisionManager(GameHandler handler) {
@@ -23,16 +25,19 @@ public class CollisionManager {
 		Collision[] cols = new Collision[offsets.size()];
 		for (int i = 0; i < cols.length; i++) {
 			Point p = offsets.get(i);
+			// Create MoveVector from offset point
 			MoveVector mv = new MoveVector(x + p.getX(), y + p.getY(), x + p.getX() + xvel, y + p.getY() + yvel);
 			cols[i] = handler.getWorld().testCollision(mv);
 		}
-		int index = 0;
-		double currMin = 1;
 		
+		// Find collision with lowest progress
+		int index = 0;
+		double currMin = 3;
+
 		for (int i = 0; i < cols.length; i++) {
 			if (cols[i] != null && cols[i].progress < currMin) {
 				currMin = cols[i].progress;
-				index = 1;
+				index = i;
 			}
 		}
 		if (cols[index] == null) {
@@ -43,8 +48,6 @@ public class CollisionManager {
 		MoveVector mv = new MoveVector(x + p.getX(), y + p.getY(), x + p.getX() + xvel, y + p.getY() + yvel);
 		
 		Collision col = cols[index];
-		x += offsets.get(index).getX();
-		y += offsets.get(index).getY();
 		
 		
 		double segAngle = col.seg.getAngle();
@@ -74,16 +77,19 @@ public class CollisionManager {
 		}
 		
 		if (Double.isNaN(newMvAngle)) {
-			return new MoveVector(x, y, col.x, col.y);
+			return new MoveVector(x, y, col.x - p.getX(), col.y - p.getY());
 		}
 		
 		double origMag = mv.getMagnitude();
 		double newMag = origMag * (1 - col.progress) * angMult;
 		double newMvX = Math.cos(Math.toRadians(newMvAngle)) * newMag;
 		double newMvY = Math.sin(Math.toRadians(newMvAngle)) * newMag;
-		MoveVector testedMv = testCollision(col.x, col.y, newMvX, newMvY);
+		
+		
+		MoveVector testedMv = testCollision(col.x - p.getX(), col.y - p.getY(), newMvX, newMvY);
+		
 		if (testedMv == null) {
-			return new MoveVector(x, y, col.x + newMvX, col.y + newMvY);
+			return new MoveVector(x, y, col.x + newMvX - p.getX(), col.y + newMvY - p.getY());
 		} else {
 			return new MoveVector(x, y, testedMv.x2, testedMv.y2);
 		}

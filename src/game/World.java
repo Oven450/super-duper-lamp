@@ -55,14 +55,14 @@ public class World {
 		if (lines != null && lines.length > 1) {
 			for (int i = 1; i < Integer.parseInt(lines[0]) + 1; i++) {
 				String[] line = lines[i].split(" ");
-				addSegment(Double.parseDouble(line[0]), Double.parseDouble(line[1]), Double.parseDouble(line[2]), Double.parseDouble(line[3]));
+				addSegment(Double.parseDouble(line[0]), Double.parseDouble(line[1]), Double.parseDouble(line[2]), Double.parseDouble(line[3]), Boolean.parseBoolean(line[4]), Boolean.parseBoolean(line[5]));
 			}
 		}
 		
 	}
 	
-	public void addSegment(double x1, double y1, double x2, double y2) {
-		segments.add(new WorldCollisionSegment(x1, y1, x2, y2, (Handler) handler));
+	public void addSegment(double x1, double y1, double x2, double y2, boolean above, boolean below) {
+		segments.add(new WorldCollisionSegment(x1, y1, x2, y2, above, below, (Handler) handler));
 	}
 	
 	public Collision testCollision(MoveVector mv) {
